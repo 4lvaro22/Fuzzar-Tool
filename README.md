@@ -32,7 +32,7 @@ La intención es realizar estos ataques sobre OBD-II para comprobar si se pueden
 1. Instalar [dependencias](https://github.com/4lvaro22/OBD-II-Fuzzer-Tool?tab=readme-ov-file#dependencias)
 2. Clonar el repositorio
 ```
-git clone https://github.com/AFLplusplus/AFLplusplus.git
+git clone https://github.com/4lvaro22/OBD-II-Fuzzer-Tool.git
 ```
 3. Ejecutar el bash script
 ```
