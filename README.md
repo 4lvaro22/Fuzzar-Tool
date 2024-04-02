@@ -38,7 +38,7 @@ git clone https://github.com/4lvaro22/OBD-II-Fuzzer-Tool.git
 ```
 sudo bash app.sh
 ```
-4. Disfrutar del fuzzing !!
+4. Disfrutar del fuzzing❗
 
 ## Referencias  
 - AFLPlusplus: https://github.com/AFLplusplus/AFLplusplus
