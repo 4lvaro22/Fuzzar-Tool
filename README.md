@@ -2,7 +2,10 @@
 Este repositorio está centrado para realizar la asignatura Trabajo Fin de Grado (TFG) de Ingeniería del Software en la Universidad de Málaga. 
 
 ## Autor  
-Álvaro Portales Luna [[Github]](https://github.com/4lvaro22) [[LinkedIn]](https://www.linkedin.com/in/alvaro-portales-luna/)
+Álvaro Portales Luna pl.alvaro43@gmail.com  
+  
+<a href="https://github.com/4lvaro22"><img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"></a>
+<a href="https://www.linkedin.com/in/alvaro-portales-luna/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white"></a>  
 
 ## Tutores  
 - Antonio Jesús Muñoz Gallego
