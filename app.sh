@@ -37,7 +37,9 @@ execute_fuzzer() {
 
 }
 
+# Existing build systems
 build_systems=("Configure build system" "CMake build system" "Meson build system")
+# Existing compilers (probably not used)
 compilers=("AFLPlusPlus + afl-clang-lto/afl-clang-lto++" "AFLPlusPlus + afl-clang-fast/afl-clang-fast++" "AFLPlusPlus + afl-gcc-fast/afl-g++-fast" "AFLPlusPlus + afl-gcc/afl-g++" "AFLPlusPlus + afl-clang/afl-clang++")
 
 echo -n "Introduce el directorio raíz donde se encuentra la aplicación: "
