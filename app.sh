@@ -1,5 +1,18 @@
 #!/bin/bash
 
+black_color="\e[0;30m"
+red_color="\e[0;31m"
+green_color="\e[0;32m"
+yellow_color="\e[0;33m"
+blue_color="\e[0;34m"
+purple_color="\e[0;35m"
+cyan_color="\e[0;36m"
+grey_color="\e[0;37m"
+white_color="\e[0;38m"
+reset_color="\e[0;39m"
+
+
+
 compiling_simulator () {
     echo -e "\n"
     PS3="Qué build system usa la aplicación: "
@@ -31,11 +44,17 @@ compiling_simulator () {
 }
 
 execute_fuzzer() { 
-    cd; cd /TFG/OBD-II-Fuzzer
+    cd; cd TFG/OBD-II-Fuzzer/
     rm -r output/ -f
-    afl-fuzz -V 5 -i inputs/ -o output/ -- $1 -t /dev/stdin
+    afl-fuzz -V  -i inputs/ -o output/ -- $1 -t /dev/stdin
 
 }
+
+if  [ $(id -u) -ne 0 ]; then 
+    echo -e "\n$red_color[!]$reset_color Debes ser usuario root para ejecutar el análisis."
+    echo -e "[+] Prueba ejecutando$purple_color sudo bash $0"
+    exit -1
+fi
 
 build_systems=("Configure build system" "CMake build system" "Meson build system")
 compilers=("AFLPlusPlus + afl-clang-lto/afl-clang-lto++" "AFLPlusPlus + afl-clang-fast/afl-clang-fast++" "AFLPlusPlus + afl-gcc-fast/afl-g++-fast" "AFLPlusPlus + afl-gcc/afl-g++" "AFLPlusPlus + afl-clang/afl-clang++")
@@ -48,7 +67,3 @@ compiling_simulator
 echo -n "Introduce el directorio del archivo binario del simulador: "
 read path_sim
 execute_fuzzer "${path_sim}"
-
-
-
-
