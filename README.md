@@ -45,5 +45,7 @@ sudo bash app.sh
 ```
 4. Disfrutar del fuzzing❗
 
+## Documentación adicional
+
 ## Referencias  
 - AFLPlusplus: https://github.com/AFLplusplus/AFLplusplus
