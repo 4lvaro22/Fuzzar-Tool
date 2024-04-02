@@ -11,42 +11,66 @@ grey_color="\e[0;37m"
 white_color="\e[0;38m"
 reset_color="\e[0;39m"
 
+reset_all_env_variables () {
+    for env_variables in analisys; do
+        unset $env_variables
+    done
+}
 
+ask_build_system () {
+    while true; do
+        echo -e "\n[+] Selecciona el system build que usa la aplicación."
+        counter=1
+        for build_system in "${build_systems[@]}"; do
+            echo "$counter) $build_system"
+            counter=$((counter+1))
+        done
+        echo -ne "\n[?] Selecciona una opción: " && read reply_build_system
+        if [ "$reply_build_system" -gt "$counter" ]; then
+            echo -e "\n$red_color[!]$reset_color Opcion no encontrada." 
+        else
+            break
+        fi
+    done
+}
 
 compiling_simulator () {
-    echo -e "\n"
-    PS3="Qué build system usa la aplicación: "
+    while true; do
+        case $reply_build_system in
+            1)
+            cd "${path}"; CC=afl-gcc-fast CXX=afl-g++-fast ./configure --disable-shared
+            ;;
 
-    select build_system_selected in "${build_systems[@]}"; do
-        echo -n "[+] Compilando la aplicación..."
-        while true; do
-            case $REPLY in
-                1)
-                cd "${path}"; CC=afl-gcc-fast CXX=afl-g++-fast ./configure --disable-shared
-                ;;
+            2)
+                cd "${path}"; 
+                sudo rm -r build -f; 
+                mkdir build; 
+                cd build; 
+                echo -e "[+] Compilando la aplicación. Esto puede tardar varios minutos...";
+                cmake -DCMAKE_C_COMPILER=afl-gcc-fast -DCMAKE_CXX_COMPILER=afl-g++-fast .. > /dev/null 2>&1; 
+                echo -e "$green_color[✓]$grey_color Aplicación compilada!!";
+                echo -e "[+] Instalando la aplicación. Esto puede tardar varios minutos...";
+                sudo make install > /dev/null 2>&1;
+                echo -e "$green_color[✓]$grey_color Aplicación instalada!!";
+                echo -e "[+] Verifica su instalación en el directorio bin de su usuario.";
+            ;;
 
-                2)
-                cd "${path}"; sudo rm -r build -f; mkdir build; cd build; cmake -DCMAKE_C_COMPILER=afl-gcc-fast -DCMAKE_CXX_COMPILER=afl-g++-fast .. > /dev/null 2>&1 ; sudo make install > /dev/null 2>&1
-                ;;
-
-                3)
-                cd "${path}"; CC=afl-gcc-fast CXX=afl-g++-fast meson
-                ;;
-            esac
-        
-            # Condition to exit the loop
-            if [ $? -eq 0 ]; then
-                break
-            fi
-        done
-        break
+            3)
+            cd "${path}"; CC=afl-gcc-fast CXX=afl-g++-fast meson
+            ;;
+        esac
+    
+        # Condition to exit the loop
+        if [ $? -eq 0 ]; then
+            break
+        fi
     done
 }
 
 execute_fuzzer() { 
     cd; cd TFG/OBD-II-Fuzzer/
     rm -r output/ -f
-    afl-fuzz -V  -i inputs/ -o output/ -- $1 -t /dev/stdin
+    afl-fuzz -V 10 -i inputs/ -o output/ -- $1 -t /dev/stdin 
 
 }
 
@@ -58,10 +82,13 @@ fi
 
 build_systems=("Configure build system" "CMake build system" "Meson build system")
 compilers=("AFLPlusPlus + afl-clang-lto/afl-clang-lto++" "AFLPlusPlus + afl-clang-fast/afl-clang-fast++" "AFLPlusPlus + afl-gcc-fast/afl-g++-fast" "AFLPlusPlus + afl-gcc/afl-g++" "AFLPlusPlus + afl-clang/afl-clang++")
+analisys=("" "AFL_USE_ASAN" "AFL_USE_MSAN" "AFL_USE_UBSAN" "AFL_USE_CFISAN" "AFL_USE_TSAN")
+
 
 echo -n "Introduce el directorio raíz donde se encuentra la aplicación: "
 read path
 
+ask_build_system
 compiling_simulator
 
 echo -n "Introduce el directorio del archivo binario del simulador: "
