@@ -85,21 +85,24 @@ if  [ $(id -u) -ne 0 ]; then
     exit -1
 fi
 
+clear
+cat tool_logo.txt
+
 # Existing build systems
 build_systems=("Configure build system" "CMake build system" "Meson build system")
 # Existing compilers (probably not used)
 compilers=("AFLPlusPlus + afl-clang-lto/afl-clang-lto++" "AFLPlusPlus + afl-clang-fast/afl-clang-fast++" "AFLPlusPlus + afl-gcc-fast/afl-g++-fast" "AFLPlusPlus + afl-gcc/afl-g++" "AFLPlusPlus + afl-clang/afl-clang++")
 analisys=("" "AFL_USE_ASAN" "AFL_USE_MSAN" "AFL_USE_UBSAN" "AFL_USE_CFISAN" "AFL_USE_TSAN")
-execution_time = 10
+execution_time=10
 
 original_path=$(pwd);
 
-echo -n "Introduce el directorio raíz donde se encuentra la aplicación: "
+echo -ne "\n[?] Introduce el directorio raíz donde se encuentra la aplicación: "
 read path
 
 ask_build_system
 compiling_simulator
 
-echo -n "Introduce el directorio del archivo binario del simulador: "
+echo -n "[?] Introduce el directorio del archivo binario del simulador: "
 read path_sim
 execute_fuzzer "${path_sim}"
