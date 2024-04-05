@@ -45,7 +45,7 @@ compiling_simulator () {
                 cd "${path}"; 
                 sudo rm -r build -f; 
                 mkdir build; 
-                cd build; 
+                cd build;
                 echo -e "[+] Compilando la aplicación. Esto puede tardar varios minutos...";
                 cmake -DCMAKE_C_COMPILER=afl-gcc-fast -DCMAKE_CXX_COMPILER=afl-g++-fast .. > /dev/null 2>&1; 
                 echo -e "$green_color[✓]$grey_color Aplicación compilada!!";
@@ -68,9 +68,14 @@ compiling_simulator () {
 }
 
 execute_fuzzer() { 
-    cd; cd TFG/OBD-II-Fuzzer/
+    cd $original_path;
     rm -r output/ -f
-    afl-fuzz -V 10 -i inputs/ -o output/ -- $1 -t /dev/stdin 
+    echo -e "[+] Ejecutando análisis..."
+    afl-fuzz -V $time_execution -i inputs/ -o output/ -- $1 -t /dev/stdin > /dev/null 2>&1
+    chmod -R $(stat -c %a inputs) output
+
+    echo -e "$green_color[✓]$grey_color Todo ha funcionado correctamente. Tiene los resultados en el directorio output."
+    python3 data_modifier.py $original_path AFLPlusPlus $execution_time
 
 }
 
@@ -83,7 +88,9 @@ fi
 build_systems=("Configure build system" "CMake build system" "Meson build system")
 compilers=("AFLPlusPlus + afl-clang-lto/afl-clang-lto++" "AFLPlusPlus + afl-clang-fast/afl-clang-fast++" "AFLPlusPlus + afl-gcc-fast/afl-g++-fast" "AFLPlusPlus + afl-gcc/afl-g++" "AFLPlusPlus + afl-clang/afl-clang++")
 analisys=("" "AFL_USE_ASAN" "AFL_USE_MSAN" "AFL_USE_UBSAN" "AFL_USE_CFISAN" "AFL_USE_TSAN")
+execution_time = 10
 
+original_path=$(pwd);
 
 echo -n "Introduce el directorio raíz donde se encuentra la aplicación: "
 read path
