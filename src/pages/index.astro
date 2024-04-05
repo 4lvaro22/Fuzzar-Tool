@@ -1,0 +1,12 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Table from "../components/Table.tsx";
+import data from "../../data.json"
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		{data}
+		<Table client:load />
+	</main>
+</Layout>
