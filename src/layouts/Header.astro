@@ -1,6 +1,65 @@
+---
+import { getData } from "../service/getData"
+---
+
 <header class="bg-white mb-10">
     <nav class="mx-auto max-w-full text-center p-6" aria-label="Global">
-        <h1 class="text-dark max-w-full font-bold py-2 px-4 text-3xl">OBD-II Fuzzer Tool</h1>
+        <div class="flex flex-6 justify-center">
+            <div class="flex col-6"></div>
+            <div class="flex basis-full">
+                <h1 class="text-dark max-w-full font-bold py-2 px-4 text-4xl">
+                    OBD-II Fuzzer Tool
+                </h1>
+            </div>
+            <div class="flex basis-1/12">
+                <button
+                    class="group relative h-fit w-60 py-3 px-3 rounded-lg bg-green-300 shadow hover:bg-green-600 hover:text-white"
+                >
+                    <p class="flex flex-row" id="export">
+                        Exportar datos a CSV
+
+                        <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="ms-5"
+                        >
+                            <path
+                                d="M14 4H20M20 4V10M20 4L12 12"
+                                stroke="#33363F"
+                                stroke-width="2"></path>
+                            <path
+                                d="M11 5H7C5.89543 5 5 5.89543 5 7V17C5 18.1046 5.89543 19 7 19H17C18.1046 19 19 18.1046 19 17V13"
+                                stroke="#33363F"
+                                stroke-width="2"
+                                stroke-linecap="round"></path>
+                        </svg>
+                    </p>
+                </button>
+            </div>
+        </div>
     </nav>
     <hr />
 </header>
+
+<script>
+import { getData } from "../service/getData";
+import csvDownload from 'json-to-csv-export'
+
+
+    
+    const button = document.getElementById("export");
+    console.log(button)
+    button?.addEventListener("click", async () => {
+        const data = await getData()
+        const dataToConvert = {
+            data: data,
+            filename: 'obd_ii_fuzzer_report',
+            delimiter: ',',
+            headers: [ "start_time", "last_update", "run_time", "fuzzer_pid", "cycles_done", "cycles_wo_finds", "time_wo_finds", "execs_done", "execs_per_sec", "execs_ps_last_min", "corpus_count", "corpus_favored", "corpus_found", "corpus_imported", "corpus_variable", "max_depth", "cur_item", "pending_favs", "pending_total", "stability", "bitmap_cvg", "saved_crashes", "saved_hangs", "last_find", "last_crash", "last_hang", "execs_since_crash", "exec_timeout", "slowest_exec_ms", "peak_rss_mb", "cpu_affinity", "edges_found", "total_edges", "var_byte_count", "havoc_expansion", "auto_dict_entries", "testcache_size", "testcache_count", "testcache_evict", "afl_banner", "afl_version", "target_mode", "command_line", "tool", "sanitizer", "time", "date"]
+        }
+        csvDownload(dataToConvert)
+    });
+</script>
