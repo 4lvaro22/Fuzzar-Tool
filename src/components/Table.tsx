@@ -11,25 +11,28 @@ export default function Table() {
     const [showAlert, setShowAlert] = useState(false)
 
     useEffect(() => {
+
         const fetchData = async () => {
-            const dataRecollected = await getData();
-            setData(dataRecollected);
+            const dataRecollected = await getData()
+            setData(dataRecollected)
         };
 
-        fetchData();
+        fetchData()
+        // const source = new EventSource('./data.json');
+        // source.onmessage = function (event) {
+        //     console.log("danik")
+        //     alert("hola")
+        // };
 
-        const source = new EventSource('./data.json');
+        
 
-        return () => {
-            source.close();
-            clearTimeout(0);
-        };
+        // return () => source.close(); // Cerrar conexión al desmontar componente
     }, []);
 
-    useEffect(() => {
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 4000);
-    }, [setData])
+    // useEffect(() => {
+    //     setShowAlert(true);
+    //     setTimeout(() => setShowAlert(false), 4000);
+    // }, [setData])
 
 
 
@@ -89,7 +92,7 @@ export default function Table() {
                                                 {individualdata.execs_done}
                                             </td>
                                             <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
-                                                {individualdata.time > 60 ? individualdata.time > 3600 ? (individualdata.time / 3600 + individualdata.time % 3600) + " horas" : (individualdata.time / 60 + individualdata.time % 60) + " minutos" : individualdata.time + " segundos"} 
+                                                {individualdata.time / 60 > 1 ? (individualdata.time / 3600 > 1 ? (individualdata.time / 3600 ) + " horas" : Math.round((individualdata.time / 60) * 100) / 100 + " minutos") : individualdata.time + " segundos"} 
                                             </td>
                                             <td className="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap">
                                                 {individualdata.saved_crashes}

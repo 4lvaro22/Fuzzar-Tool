@@ -19,13 +19,13 @@ reset_all_env_variables () {
 
 ask_build_system () {
     while true; do
-        echo -e "\n[+] Selecciona el system build que usa la aplicación."
+        echo -e "$blue_color[+]$grey_color Selecciona el system build que usa la aplicación."
         counter=1
         for build_system in "${build_systems[@]}"; do
             echo "$counter) $build_system"
             counter=$((counter+1))
         done
-        echo -ne "\n[?] Selecciona una opción: " && read reply_build_system
+        echo -ne "\n$yellow_color[?]$grey_color Selecciona una opción: " && read reply_build_system
         if [ "$reply_build_system" -gt "$counter" ]; then
             echo -e "\n$red_color[!]$reset_color Opcion no encontrada." 
         else
@@ -46,13 +46,13 @@ compiling_simulator () {
                 sudo rm -r build -f; 
                 mkdir build; 
                 cd build;
-                echo -e "[+] Compilando la aplicación. Esto puede tardar varios minutos...";
+                echo -e "$blue_color[+]$grey_color Compilando la aplicación. Esto puede tardar varios minutos...";
                 cmake -DCMAKE_C_COMPILER=afl-gcc-fast -DCMAKE_CXX_COMPILER=afl-g++-fast .. > /dev/null 2>&1; 
                 echo -e "$green_color[✓]$grey_color Aplicación compilada!!";
-                echo -e "[+] Instalando la aplicación. Esto puede tardar varios minutos...";
+                echo -e "$blue_color[+]$grey_color Instalando la aplicación. Esto puede tardar varios minutos...";
                 sudo make install > /dev/null 2>&1;
                 echo -e "$green_color[✓]$grey_color Aplicación instalada!!";
-                echo -e "[+] Verifica su instalación en el directorio bin de su usuario.";
+                echo -e "$blue_color[+]$grey_color Verifica su instalación en el directorio bin de su usuario.";
             ;;
 
             3)
@@ -70,39 +70,54 @@ compiling_simulator () {
 execute_fuzzer() { 
     cd $original_path;
     rm -r output/ -f
-    echo -e "[+] Ejecutando análisis..."
+    echo -e "$blue_color[+]$grey_color Ejecutando análisis..."
     afl-fuzz -V 10 -i inputs/ -o output/ -- $1 -t /dev/stdin > /dev/null 2>&1
     sudo chmod -R $(stat -c %a inputs) output/*
 
-    echo -e "$green_color[✓]$grey_color Todo ha funcionado correctamente. Tiene los resultados en el directorio output."
-    python3 data_modifier.py $original_path AFLPlusPlus $execution_time > /dev/null 2>&1
-    npm run dev &
+    echo -e "$green_color[✓]$grey_color Todo ha funcionado correctamente."
+    python3 data_modifier.py $original_path AFLPlusPlus $execution_time #> /dev/null 2>&1
+    echo -ne "\n$yellow_color[?]$grey_color Quiere realizar otra prueba fuzzing? Si/[No]: "
+    read loop
+    
+    if  [ "$loop" = "Si" ]; then 
+        main
+    else
+        printf "$blue_color[+]$grey_color Tiene los datos listos para su visualización en $cyan_color\e]8;;http://localhost:4321\ahttp://localhost:4321\e]8;;\a$grey_color.\n"
+        npm run start > /dev/null 2>&1
+    fi
+
+    
+}
+
+main() {
+    clear
+    cat tool_logo.txt
+
+    # Existing build systems
+    build_systems=("Configure build system" "CMake build system" "Meson build system")
+    # Existing compilers (probably not used)
+    compilers=("AFLPlusPlus + afl-clang-lto/afl-clang-lto++" "AFLPlusPlus + afl-clang-fast/afl-clang-fast++" "AFLPlusPlus + afl-gcc-fast/afl-g++-fast" "AFLPlusPlus + afl-gcc/afl-g++" "AFLPlusPlus + afl-clang/afl-clang++")
+    analisys=("" "AFL_USE_ASAN" "AFL_USE_MSAN" "AFL_USE_UBSAN" "AFL_USE_CFISAN" "AFL_USE_TSAN")
+    execution_time=100
+
+    original_path=$(pwd);
+
+    echo -ne "\n$yellow_color[?]$grey_color Introduce el directorio raíz donde se encuentra la aplicación: "
+    read path
+
+    ask_build_system
+    compiling_simulator
+
+    echo -ne "\n$yellow_color[?]$grey_color Introduce el directorio del archivo binario del simulador: "
+    read path_sim
+    execute_fuzzer "${path_sim}"
 }
 
 if  [ $(id -u) -ne 0 ]; then 
     echo -e "\n$red_color[!]$reset_color Debes ser usuario root para ejecutar el análisis."
-    echo -e "[+] Prueba ejecutando$purple_color sudo bash $0"
+    echo -e "$blue_color[+]$grey_color Prueba ejecutando$purple_color sudo bash $0"
     exit -1
 fi
 
-clear
-cat tool_logo.txt
+main
 
-# Existing build systems
-build_systems=("Configure build system" "CMake build system" "Meson build system")
-# Existing compilers (probably not used)
-compilers=("AFLPlusPlus + afl-clang-lto/afl-clang-lto++" "AFLPlusPlus + afl-clang-fast/afl-clang-fast++" "AFLPlusPlus + afl-gcc-fast/afl-g++-fast" "AFLPlusPlus + afl-gcc/afl-g++" "AFLPlusPlus + afl-clang/afl-clang++")
-analisys=("" "AFL_USE_ASAN" "AFL_USE_MSAN" "AFL_USE_UBSAN" "AFL_USE_CFISAN" "AFL_USE_TSAN")
-execution_time=100
-
-original_path=$(pwd);
-
-echo -ne "\n[?] Introduce el directorio raíz donde se encuentra la aplicación: "
-read path
-
-#ask_build_system
-#compiling_simulator
-
-echo -n "[?] Introduce el directorio del archivo binario del simulador: "
-read path_sim
-execute_fuzzer "${path_sim}"

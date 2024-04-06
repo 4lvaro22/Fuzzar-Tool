@@ -2,6 +2,7 @@ import json
 import sys
 import os
 import re
+import datetime
 
 def get_sanitizer(file_path):
     with open(file_path) as file:
@@ -41,6 +42,7 @@ def json_to_file(data_json):
             except json.JSONDecodeError:
                 data = []
         data.append(data_json)
+        data = sorted(data, key=lambda x: x['date'], reverse=True)
 
         with open(file_name, "w") as file:
             json.dump(data, file)
@@ -57,6 +59,7 @@ analisys_data: dict = read_fuzzer_stats(path + '/output/default/fuzzer_stats')
 analisys_data["tool"] = fuzzer
 analisys_data["sanitizer"] = get_sanitizer(path + '/output/default/fuzzer_setup')
 analisys_data["time"] = execution_time
+analisys_data["date"] = datetime.datetime.now().strftime("%d-%m-%Y - %H:%M")
 
 json_to_file(analisys_data)
 
