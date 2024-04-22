@@ -1,0 +1,88 @@
+<% backgroundFailed="bg-red-100 border-red-200" %>
+<% backgroundSuccess="bg-green-100 border-green-200" %>
+<% backgroundRunning="bg-purple-100 border-purple-200" %>
+
+<div class="sm:-mx-6 lg:-mx-8">
+  <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+    <div class="overflow-hidden">
+      <table class="min-w-full text-center">
+        <thead class="border-b">
+          <tr>
+            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+              Fecha
+            </th>
+            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+              Herramienta
+            </th>
+            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+              Exploración de errores
+            </th>
+            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+              Número de ejecuciones
+            </th>
+            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+              Tiempo transcurrido
+            </th>
+            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+              Errores encontrados
+            </th>
+            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+              Timeouts encontrados
+            </th>
+            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+              Estado
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% analysis.forEach(element => { %>
+          <tr class="border-b <%= element.status == "Running" ? backgroundRunning : (element.saved_crashes <= 0 ? backgroundSuccess : backgroundFailed) %>">
+            <td
+              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+            >
+              <%=element.date%>
+            </td>
+            <td
+              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+            >
+              <%=element.tool%>
+            </td>
+            <td
+              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+            >
+              <%=element.sanitizer == "" ? "-" : element.sanitizer%>
+            </td>
+            <td
+              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+            >
+              <%=element.execs_done%>
+            </td>
+            <td
+              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+            >
+              <%=element.time / 60 > 1 ? (element.time / 3600 > 1 ?
+              (element.time / 3600 ) + " horas" : Math.round((element.time / 60)
+              * 100) / 100 + " minutos") : element.time + " segundos"%>
+            </td>
+            <td
+              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+            >
+              <%=element.saved_crashes%>
+            </td>
+            <td
+              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+            >
+              0
+            </td>
+            <td
+              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+            >
+              <%=element.saved_crashes == 0 ? "Superada" : "Fallada"%>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

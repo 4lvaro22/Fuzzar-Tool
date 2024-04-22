@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <%- include('./layout/header.ejs') %>
+    <main>
+      <%- include('./components/table.ejs') %>
+    </main>
+    <%- include('./layout/footer.ejs') %>
+  </body>
+</html>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+
+    // Listen for data change event
+    socket.on('dataChanged', () => {
+        // Reload the page when data changes
+        location.reload();
+    });
+</script>
