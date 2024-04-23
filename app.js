@@ -1,15 +1,15 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-const http = require('http');
-const socketIo = require('socket.io');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const fs = require('fs');
+const _ = require('lodash');
 
 var indexRouter = require('./routes/index');
 
 var app = express();
+
+app.locals._ = _;
 
 // view engine setup
 app.set('view engine', 'ejs');

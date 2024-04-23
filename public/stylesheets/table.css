@@ -1,0 +1,11 @@
+table { border-collapse: collapse;}
+
+
+.tableFixHead {
+  overflow: auto;
+}
+
+.tableFixHead thead th {
+  position: sticky;
+  top: 0;
+}

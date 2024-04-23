@@ -52,10 +52,11 @@ def json_to_file(data_json):
 path = sys.argv[1]
 fuzzer: str = sys.argv[2]
 execution_time = sys.argv[3]
+last_folder = sys.argv[4]
 
-analisys_data: dict = read_fuzzer_stats(path + '/output/default/fuzzer_stats')
+analisys_data: dict = read_fuzzer_stats(path + '/results/result-'+ last_folder + '/default/fuzzer_stats')
 analisys_data["tool"] = fuzzer
-analisys_data["sanitizer"] = get_sanitizer(path + '/output/default/fuzzer_setup')
+analisys_data["sanitizer"] = get_sanitizer(path + '/results/result-'+ last_folder + '/default/fuzzer_setup')
 analisys_data["time"] = execution_time
 
 json_to_file(analisys_data)

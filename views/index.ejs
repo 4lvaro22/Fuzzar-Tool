@@ -4,9 +4,10 @@
     <title></title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
+  <body class="">
     <%- include('./layout/header.ejs') %>
-    <main>
+    <main class="relative">
+      <%- include('./components/alert.ejs') %>
       <%- include('./components/table.ejs') %>
     </main>
     <%- include('./layout/footer.ejs') %>
@@ -14,11 +15,21 @@
 </html>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    const socket = io();
+  const socket = io();
 
-    // Listen for data change event
-    socket.on('dataChanged', () => {
-        // Reload the page when data changes
-        location.reload();
-    });
+  socket.on("dataChanged", () => {
+    location.reload();
+  });
+</script>
+<script>
+  alert = document.getElementById("toast-default");
+  closeAlert = document.getElementById("close-alert");
+
+  window.onload = setInterval(() => {
+    alert.style.opacity = '0';
+  }, 5000);
+
+  closeAlert.onclick = function(){
+    alert.style.opacity = '0';
+  }
 </script>

@@ -2,34 +2,35 @@
 <% backgroundSuccess="bg-green-100 border-green-200" %>
 <% backgroundRunning="bg-purple-100 border-purple-200" %>
 
-<div class="sm:-mx-6 lg:-mx-8">
-  <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-    <div class="overflow-hidden">
-      <table class="min-w-full text-center">
-        <thead class="border-b">
+<div class="container min-w-full">
+  <%- include('./modal.ejs') %>
+    <h2 class="text-2xl mb-5 mx-5 -my-5">Análisis realizados</h2>
+    <div>
+      <table class="w-full text-center">
+        <thead class="border-b border-t">
           <tr>
-            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Fecha
             </th>
-            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Herramienta
             </th>
-            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Exploración de errores
             </th>
-            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Número de ejecuciones
             </th>
-            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Tiempo transcurrido
             </th>
-            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Errores encontrados
             </th>
-            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Timeouts encontrados
             </th>
-            <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4">
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Estado
             </th>
           </tr>
@@ -38,44 +39,44 @@
           <% analysis.forEach(element => { %>
           <tr class="border-b <%= element.status == "Running" ? backgroundRunning : (element.saved_crashes <= 0 ? backgroundSuccess : backgroundFailed) %>">
             <td
-              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
               <%=element.date%>
             </td>
             <td
-              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
               <%=element.tool%>
             </td>
             <td
-              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              <%=element.sanitizer == "" ? "-" : element.sanitizer%>
+              <button class="sanitizer underline"><%=element.sanitizer == "" ? "-" : element.sanitizer%></button>
             </td>
             <td
-              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
               <%=element.execs_done%>
             </td>
             <td
-              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
               <%=element.time / 60 > 1 ? (element.time / 3600 > 1 ?
               (element.time / 3600 ) + " horas" : Math.round((element.time / 60)
               * 100) / 100 + " minutos") : element.time + " segundos"%>
             </td>
             <td
-              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
               <%=element.saved_crashes%>
             </td>
             <td
-              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
               0
             </td>
             <td
-              class="text-sm text-gray-900 font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
               <%=element.saved_crashes == 0 ? "Superada" : "Fallada"%>
             </td>
@@ -83,6 +84,27 @@
           <% }); %>
         </tbody>
       </table>
-    </div>
+      <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4 mx-5">
+        <span class="text-sm font-normal text-black dark:text-black mb-4 md:mb-0 block w-full md:inline md:w-auto">Enseñando<span class="font-semibold text-black"> - <%=(Number(actualPage) -1 ) * analysis.length %></span> de <span class="font-semibold text-black"><%=Number(actualPage) * analysis.length%></span></span>
+        <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+          <% if (actualPage != 1){%>
+            <li>
+                <a href="/<%=Number(actualPage)-1%>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-black bg-white border rounded-s-lg">Previous</a>
+            </li>
+            <% } %>
+            <% page = 1 %>
+            <% _.range(0, totalAnalysis.length, 10).forEach(element => { %>
+              <li>
+                <a href="/<%=page%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border"><%= page %></a>
+              </li>
+              <% page ++; %>
+            <% }); %>
+            <% if (actualPage != page-1){%>
+        <a href="/<%=Number(actualPage)+1%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border rounded-e-lg">Next</a>
+            </li>
+            <% } %>
+        </ul>
+    </nav>
   </div>
-</div>
+  <script src="./javascripts/modal.js"></script>
+  
