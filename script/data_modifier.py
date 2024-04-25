@@ -2,6 +2,7 @@ import json
 import sys
 import os
 import re
+import uuid
 
 def get_sanitizer(file_path):
     with open(file_path) as file:
@@ -9,8 +10,8 @@ def get_sanitizer(file_path):
 
     sanitizer = ""
     for line in lines:
-        if re.findall(r'^AFL_USE_ & =1$', line):
-            sanitizer = line.split('_ |=')[2]
+        if re.findall(r'AFL_USE_[A-Za-z]+=1', line):
+            sanitizer = line.replace('=', '_').split('_')[2]
 
     return sanitizer
 
@@ -41,7 +42,7 @@ def json_to_file(data_json):
             except json.JSONDecodeError:
                 data = []
         data.append(data_json)
-
+        data = sorted(data, key=lambda d: d['start_time'], reverse=True)
         with open(file_name, "w") as file:
             json.dump(data, file)
     else:
@@ -58,6 +59,8 @@ analisys_data: dict = read_fuzzer_stats(path + '/results/result-'+ last_folder +
 analisys_data["tool"] = fuzzer
 analisys_data["sanitizer"] = get_sanitizer(path + '/results/result-'+ last_folder + '/default/fuzzer_setup')
 analisys_data["time"] = execution_time
+analisys_data["id"] = str(uuid.uuid4())
+analisys_data["initial_time"] = last_folder
 
 json_to_file(analisys_data)
 

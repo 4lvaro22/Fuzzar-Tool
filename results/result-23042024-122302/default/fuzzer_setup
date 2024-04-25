@@ -1,6 +1,0 @@
-# environment variables:
-AFL_CUSTOM_INFO_PROGRAM=/usr/local/bin/obdsim
-AFL_CUSTOM_INFO_PROGRAM_ARGV=-t /dev/stdin
-AFL_CUSTOM_INFO_OUT=results/result-23042024-122302/default
-# command line:
-'afl-fuzz' '-V' '10' '-i' 'inputs/' '-o' 'results/result-23042024-122302' '--' '/usr/local/bin/obdsim' '-t' '/dev/stdin'
