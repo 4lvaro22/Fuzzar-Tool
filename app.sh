@@ -137,7 +137,7 @@ finilizing_rutine() {
 
 help()
 {
-   echo -e "\nsudo bash scripts/app.sh [ opciones ]"
+   echo -e "\nsudo bash app.sh [ opciones ]"
    echo -e "\nopciones:"
    echo "-f <nombre_fuzzer>   Seleccionar el fuzzer para los análisis. (Por defecto: AFLPlusPlus)."
    echo "-h                   Muestra una ayuda sobre los argumentos de la herramienta."
@@ -222,8 +222,8 @@ while getopts "h f: v t: l s --" option; do
 
         if [[ ! $fuzzer =~ ^[a-z]+$ || "$bool_cf" -eq 0 ]]; then
             echo -ne "\n$red_color[-]$reset_color Error en el valor del fuzzer."
-            echo -ne "\n$grey_color[!]$reset_color Si estás ejecutando sudo bash script/app.sh -ft, prueba a ejecutar $purple_color sudo bash script/app.sh -f <nombre_fuzzer> -t <tiempo_minutos>$reset_color"
-            echo -ne "\n$grey_color[!]$reset_color En otro caso, deberías proporcionar un fuzzer válido. Prueba a ejecutar $purple_color sudo bash script/app.sh -l$reset_color para ver los fuzzers existentes.\n"
+            echo -ne "\n$grey_color[!]$reset_color Si estás ejecutando sudo bash app.sh -ft, prueba a ejecutar $purple_color sudo bash app.sh -f <nombre_fuzzer> -t <tiempo_minutos>$reset_color"
+            echo -ne "\n$grey_color[!]$reset_color En otro caso, deberías proporcionar un fuzzer válido. Prueba a ejecutar $purple_color sudo bash app.sh -l$reset_color para ver los fuzzers existentes.\n"
             exit
         fi;;
     s)
@@ -233,7 +233,7 @@ while getopts "h f: v t: l s --" option; do
         execution_time="$OPTARG"
         if [[ ! "$execution_time" =~ ^[0-9]+$ ]]; then
             echo -ne "\n$red_color[-]$reset_color Error en el valor del tiempo."
-            echo -ne "\n$grey_color[!]$grey_color Si estás ejecutando sudo bash script/app.sh -ft, prueba a ejecutar $purple_color sudo bash script/app.sh -f <nombre_fuzzer> -t <tiempo_minutos>$reset_color"
+            echo -ne "\n$grey_color[!]$grey_color Si estás ejecutando sudo bash app.sh -ft, prueba a ejecutar $purple_color sudo bash app.sh -f <nombre_fuzzer> -t <tiempo_minutos>$reset_color"
             echo -ne "\n$grey_color[!]$grey_color En otro caso, deberías proporcionar un tiempo en minutos válido.\n"
             exit
         fi
