@@ -252,7 +252,7 @@ done
 
 trap 'cleanup' SIGINT SIGTERM
 clear
-cat tool_logo.txt
+cat banner/logo.asc
 
 if [[ -d "/results" ]]
 then
