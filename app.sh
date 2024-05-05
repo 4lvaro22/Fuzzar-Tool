@@ -89,7 +89,7 @@ afl() {
     ask_sanitizer
     export "${analysis_comm[reply_sanitizer-1]}=1"
     echo -e "$blue_color[+]$grey_color Fuzzer escogido AFLPlusPlus."
-    echo -e "$blue_color[+]$grey_color Exploración de errores escogida "${analisys[reply_sanitizer]}"."
+    echo -e "$blue_color[+]$grey_color Exploración de errores escogida "${analysis[reply_sanitizer]}"."
     echo -e "$blue_color[+]$grey_color Tiempo estimado "${execution_time}" segundos."
     echo -e "$blue_color[+]$grey_color Ejecutando análisis..."
     current_date=$(date +"%d%m%Y-%H%M%S")
@@ -173,7 +173,9 @@ initialize_variables(){
 
 
 main() {
-    original_path=$(pwd);
+    original_path=$(pwd)
+
+    python3 web_scrapper.py
 
     echo -ne "\n$yellow_color[?]$grey_color Introduce el directorio raíz donde se encuentra la aplicación: "
     read path
@@ -238,7 +240,7 @@ while getopts "h f: v t: l s --" option; do
             exit
         fi
 
-        tiempo=$((tiempo * 60));;
+        execution_time=$((tiempo * 60));;
     v)
         version
         exit;;
@@ -248,11 +250,23 @@ while getopts "h f: v t: l s --" option; do
    esac
 done
 
-execution_time=10
-
 trap 'cleanup' SIGINT SIGTERM
-#clear
+clear
 cat tool_logo.txt
+
+if [[ -d "/results" ]]
+then
+   mkdir results;
+   chmod 777 results;
+fi
+
+if [ -f "data.json" ]
+then
+   touch data.json;
+   chmod 777 data.json;
+fi
+
+execution_time=1
 
 echo -ne "\n$yellow_color[?]$grey_color Quieres desplegar la visualización de datos mediante una aplicación web? (s/N): "
 read app_web

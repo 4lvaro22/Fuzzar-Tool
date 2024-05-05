@@ -25,11 +25,16 @@ var server = http.createServer(app);
 const io = socketIo(server);
 
 io.on('connection', (socket) => {
-  fs.watch('data.json', (eventType, filename) => {
+  try {
+    fs.watch('data.json', (eventType, filename) => {
       if (eventType === 'change') {
-          io.emit('dataChanged');
+        io.emit('dataChanged');
       }
-  });
+    });
+  }catch (err){
+    
+  }
+  
 });
 
 /**
