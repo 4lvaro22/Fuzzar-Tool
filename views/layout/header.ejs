@@ -1,0 +1,47 @@
+<header class="bg-white mb-10">
+  <nav class="mx-auto max-w-full text-center p-6" aria-label="Global">
+    <div class="flex flex-6 justify-center">
+      <div class="flex col-6"></div>
+      <div class="flex basis-full">
+        <h1 class="text-dark max-w-full font-bold py-2 px-4 text-4xl">
+          OBD-II Fuzzer Tool
+        </h1>
+      </div>
+      <div class="flex basis-1/12">
+        <form action="/csv/download" method="get">
+          <button
+          class="group relative h-fit w-60 py-3 px-3 rounded-lg <%=analysis.length !== 0 ? 'bg-green-500 hover:text-white opacity-100' : '' %> shadow <%=analysis.length === 0 ? 'bg-gray-300 opacity-50' : 'hover:bg-green-600 hover:opacity-100' %>"
+          id="export"
+          <%=analysis.length === 0 ? 'disabled' : '' %>
+          >
+            <p class="flex flex-row">
+              Exportar datos a CSV
+
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="ms-5"
+              >
+                <path
+                  d="M14 4H20M20 4V10M20 4L12 12"
+                  stroke="#33363F"
+                  stroke-width="2"
+                ></path>
+                <path
+                  d="M11 5H7C5.89543 5 5 5.89543 5 7V17C5 18.1046 5.89543 19 7 19H17C18.1046 19 19 18.1046 19 17V13"
+                  stroke="#33363F"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                ></path>
+              </svg>
+            </p>
+          </button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <hr />
+</header>
