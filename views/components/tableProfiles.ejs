@@ -4,9 +4,10 @@
 
 <div class="container min-w-full">
     <%- include('./sanitizerModal.ejs') %>
+    <%- include('./testModal.ejs') %>
     <div class="flex flex-row justify-center">
       <div class="flex basis-full">
-        <h2 class="text-2xl px-5">Análisis realizados</h2>
+        <h2 class="text-2xl px-5">Perfiles fuzzing creados</h2>
       </div>
     </div>
     <div>
@@ -14,97 +15,79 @@
         <thead class="border-b border-t">
           <tr class="bg-indigo-200">
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Fecha
+                Nombre
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Herramienta
+                Configuración del fuzzer
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Exploración de errores
+                Ruta del simulador
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Número de ejecuciones
+                Configuración del simulador
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Tiempo transcurrido
+                Tiempo de ejecución
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Errores encontrados
+                Casos de prueba predeterminados
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Timeouts encontrados
-            </th>
-            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Estado
-            </th>
-            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Borrar Análisis
+                Ejecutar prueba
             </th>
           </tr>
         </thead>
         <tbody>
-          <% if (analysis.length > 0) { %>
-          <% analysis.forEach(element => { %>
-          <tr class="border-b <%= element.status == "Running" ? backgroundRunning : (element.saved_crashes <= 0 ? backgroundSuccess : backgroundFailed) %>">
+          <% if (profiles.length > 0) { %>
+          <% profiles.forEach(element => { %>
+          <tr class="border-b">
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              <%=moment.unix(element.start_time).format("DD/MM/YYYY-HH:mm:ss")%>
+              <%=element.name%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              <%=element.tool%>
+              <%=element.fuzzer%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              <button class="sanitizer underline"><%=element.sanitizer == "" ? "Estándar" : element.sanitizer%></button>
+            <%=element.ex_sim%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              <%=element.execs_done%>
+              <%=element.dir_sim%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              <%=element.time / 60 > 1 ? (element.time / 3600 > 1 ?
-              (element.time / 3600 ) + " horas" : Math.round((element.time / 60)
-              * 100) / 100 + " minutos") : element.time + " segundos"%>
+            <%=element.exec_time%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              <%=element.saved_crashes%>
+            <%=element.preds_data%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              0
-            </td>
-            <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
-            >
-              <%=element.saved_crashes == 0 ? "Superada" : "Fallada"%>
-            </td>
-            <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
-            >
-              <a href="/delete/<%=element.id%>"><button class="mx-auto justify-center my-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Borrar</button></a>
+              <form method="post" action="/profile/execute/<%=element.name%>"><button class="mx-auto justify-center my-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Ejecutar</button></a>
             </td>
           </tr>
           <% }); %>
           <% } else { %>
             <tr>
-              <td colspan="9"><h3 class="text-lg font-semibold text-center my-10">AVISO: No se han encontrado análisis realizados. <br>Por favor, use la herramienta facilitada por terminal.</h3></td>
+              <td colspan="9"><h3 class="text-lg font-semibold text-center my-10">AVISO: No se han encontrado perfiles creados.</h3></td>
             </tr>
           <% } %>
         </tbody>
       </table>
-      <% if (analysis.length > 0) { %>
+      <% if (profiles.length > 0) { %>
       <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4 mx-5">
-        <span class="text-sm font-normal text-black dark:text-black mb-4 md:mb-0 block w-full md:inline md:w-auto">Enseñando<span class="font-semibold text-black"> - <%=initialData + 1 %></span> al <span class="font-semibold text-black"><%=initialData + analysis.length%></span></span>
+        <span class="text-sm font-normal text-black dark:text-black mb-4 md:mb-0 block w-full md:inline md:w-auto">Enseñando<span class="font-semibold text-black"> - <%=initialData + 1 %></span> al <span class="font-semibold text-black"><%=initialData + profiles.length%></span></span>
         <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
           <% if (actualPage != 1){%>
             <li>
@@ -112,7 +95,7 @@
             </li>
             <% } %>
             <% page = 1 %>
-            <% _.range(0, totalAnalysis.length, 10).forEach(element => { %>
+            <% _.range(0, totalProfiles.length, 10).forEach(element => { %>
               <li>
                 <a href="/<%=page%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border"><%= page %></a>
               </li>
@@ -126,5 +109,4 @@
     </nav>
     <% } %>
   </div>
-  <script src="./javascripts/sanitizerModal.js"></script>
   

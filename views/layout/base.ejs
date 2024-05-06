@@ -8,10 +8,7 @@
   </head>
   <body class="">
     <%- include('./layout/header.ejs') %>
-    <main class="relative">
-      <%- include('./components/alert.ejs') %> 
-      <%- include('./components/table.ejs') %>
-    </main>
+    <main class="relative"><%{{ content }}%></main>
     <%- include('./layout/footer.ejs') %>
   </body>
 </html>

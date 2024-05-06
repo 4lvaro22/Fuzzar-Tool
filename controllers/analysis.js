@@ -1,14 +1,15 @@
 const fs = require('fs').promises;
 const controller = {};
 const path = require('path');
-const filePath = path.resolve(__dirname, "../data.json");
+const filePathTestDone = path.resolve(__dirname, "../data.json");
 const json2csv = require('json-2-csv')
 
 controller.getAnalysis = async function (req, res, next) {
   var databaseData = []
   try {
-    var data = await fs.readFile(filePath, { encoding: 'utf-8' });
+    var data = await fs.readFile(filePathTestDone, { encoding: 'utf-8' });
     databaseData = JSON.parse(data);
+
   } catch (error) {
 
   }
@@ -28,13 +29,13 @@ controller.getAnalysis = async function (req, res, next) {
     lastData = 10 * req.params.page;
   }
 
-  res.render("index", { totalAnalysis: databaseData, analysis: databaseData.slice(initialData, lastData), actualPage: actualPage, initialData: initialData, lastData: lastData });
+  res.render("index.ejs", { totalAnalysis: databaseData, analysis: databaseData.slice(initialData, lastData), actualPage: actualPage, initialData: initialData, lastData: lastData, profiles: undefined  });
 
 };
 
 controller.deleteAnalysis = async function (req, res, next) {
   try {
-    const data = await fs.readFile(filePath, { encoding: 'utf-8' });
+    const data = await fs.readFile(filePathTestDone, { encoding: 'utf-8' });
     const databaseData = JSON.parse(data);
 
     var removedObject = databaseData.filter((obj) => obj.id === req.params.id);
@@ -43,7 +44,7 @@ controller.deleteAnalysis = async function (req, res, next) {
     removedArray = JSON.stringify(removedArray)
 
     try {
-      fs.writeFile(filePath, removedArray, 'utf-8')
+      fs.writeFile(filePathTestDone, removedArray, 'utf-8')
     } catch (err) {
       console.error(err);
     }
@@ -55,7 +56,7 @@ controller.deleteAnalysis = async function (req, res, next) {
 };
 
 controller.downloadCSV = async function (req, res, next) {
-  const data = await fs.readFile(filePath, { encoding: 'utf-8' });
+  const data = await fs.readFile(filePathTestDone, { encoding: 'utf-8' });
   const databaseData = JSON.parse(data);
   const csv = await json2csv.json2csv(databaseData);
 
