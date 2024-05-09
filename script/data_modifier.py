@@ -15,23 +15,13 @@ def get_sanitizer(file_path):
 
     return sanitizer
 
-def read_fuzzer_stats(file_path):
-    
-    with open(file_path, "r") as file:
-        lines = file.readlines()
-    
-    data = {}
+def findings(dir_path):
+    findings = 0;
+    for file in os.listdir(dir_path):
+        if os.system(f'file -b {file}') == "data":
+            findings += 1
 
-    for line in lines:
-        key, value = line.strip().split(':')
-        key = key.strip()
-        value = value.strip()
-
-        data[key] = value
-    
-    fuzzer_stats: dict = json.loads(json.dumps(data, indent=4))
-    
-    return fuzzer_stats
+    return findings
 
 def json_to_file(data_json):
     file_name = "data.json"
@@ -50,17 +40,22 @@ def json_to_file(data_json):
             data_json = [data_json]
             json.dump(data_json, file)
 
-path = sys.argv[1]
-fuzzer: str = sys.argv[2]
-execution_time = sys.argv[3]
-last_folder = sys.argv[4]
+data_source = sys.argv[1]
+path = sys.argv[2]
+name = sys.argv[3]
+conf_fuzzing = sys.argv[4]
+description = sys.argv[5]
 
-analisys_data: dict = read_fuzzer_stats(path + '/results/result-'+ last_folder + '/default/fuzzer_stats')
-analisys_data["tool"] = fuzzer
-analisys_data["sanitizer"] = get_sanitizer(path + '/results/result-'+ last_folder + '/default/fuzzer_setup')
-analisys_data["time"] = execution_time
+
+analisys_data: dict = {}
+
+analisys_data["path"] = path
+analisys_data["name"] = name
+analisys_data["conf_fuzzing"] = conf_fuzzing
+analisys_data["data_source"] = data_source
+analisys_data["description"] = description
+analisys_data["findings"] = findings(path)
 analisys_data["id"] = str(uuid.uuid4())
-analisys_data["initial_time"] = last_folder
 
 json_to_file(analisys_data)
 

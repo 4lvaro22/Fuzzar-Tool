@@ -1,0 +1,105 @@
+<div class="max-w-7xl mx-auto p-8 bg-gray-400 rounded-md shadow-md my-5">
+  <h2 class="text-2xl font-semibold mb-6">Crear perfil fuzzer</h2>
+  <form action="/profile/save" method="post">
+
+    <div class="flex flex-row content-around">
+      <div class="mb-4 columns-2xl me-2">
+        <label for="name" class="block text-gray-700 text-sm font-bold mb-2"
+          >Nombre del perfil</label
+        >
+        <input
+          type="text"
+          id="name"
+          name="name"
+          placeholder="OBD-II Fuzzing with AFL"
+          required
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div class="mb-4 columns-2xl ms-2">
+        <label for="dirErrs" class="block text-gray-700 text-sm font-bold mb-2"
+          >Directorio de los errores</label
+        >
+        <input
+          type="text"
+          id="dirErrs"
+          name="dirErrs"
+          placeholder="/outputs/default/crashes"
+          required
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+        />
+      </div>
+    </div>
+    <div class="flex flex-row content-around">
+      <div class="mb-4 columns-7xl me-2">
+        <label for="confComp" class="block text-gray-700 text-sm font-bold mb-2"
+          >Configuración de la herramienta de compilaje</label
+        >
+        <input
+          type="text"
+          id="confComp"
+          name="confComp"
+          placeholder="mkdir build; cd build; cmake -DCMAKE_C_COMPILER=afl-cc -DCMAKE_CXX_COMPILER=afl-c++ .."
+          required
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+        />
+      </div>
+    </div>
+    <div class="flex flex-row content-around">
+      <div class="mb-4 columns-2xl me-2">
+        <label for="pathSim" class="block text-gray-700 text-sm font-bold mb-2"
+          >Directorio raíz del simulador o fichero</label
+        >
+        <input
+          type="text"
+          id="pathSim"
+          name="pathSim"
+          placeholder="/home/alvaro/TFG/obdgpslogger"
+          required
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+        />
+      </div>
+      <div class="mb-4 columns-2xl ms-2">
+        <label for="email" class="block text-gray-700 text-sm font-bold mb-2"
+          >Configuración del fuzzing</label
+        >
+        <input
+          type="text"
+          id="confSim"
+          name="confSim"
+          placeholder="afl-fuzz -i inputs -o results/outputs/ -- obdsim -t /dev/stdin"
+          required
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+        />
+      </div>
+    </div>
+    <div class="mb-4">
+      <label for="data" class="block text-gray-700 text-sm font-bold mb-2"
+        >Fuente de datos predeterminados</label
+      >
+      <input id="obd" type="radio" name="data" value="OBD-II" />
+      <label for="css">OBD-II</label> <br />
+      <input id="can" type="radio" name="data" value="CAN Bus" />
+      <label for="css">CAN Bus</label> <br />
+      <input id="no" type="radio" name="data" value="No predeterminado" checked />
+      <label for="no">No predeterminado</label>
+    </div>
+    <div class="mb-6">
+      <label for="description" class="block text-gray-700 text-sm font-bold mb-2"
+        >Descripción de la prueba</label
+      >
+      <textarea
+        id="description"
+        name="description"
+        rows="4"
+        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+      ></textarea>
+    </div>
+    <button
+      type="submit"
+      class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
+    >
+      Send Message
+    </button>
+  </form>
+</div>

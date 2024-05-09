@@ -10,5 +10,7 @@ router.get("/csv/download", analysisController.downloadCSV);
 
 router.get("/profile/execute", profileController.getProfiles);
 router.post("/profile/execute/:name", profileController.executionProfile);
+router.get("/profile/new", profileController.newProfile);
+router.post("/profile/save", profileController.saveProfile);
 
 module.exports = router;
