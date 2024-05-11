@@ -3,13 +3,11 @@
 <% backgroundRunning="bg-purple-100 border-purple-200" %>
 
 <div class="container min-w-full">
-    <%- include('./sanitizerModal.ejs') %>
-    <%- include('./testModal.ejs') %>
-    <div class="flex flex-row justify-center">
-      <div class="flex basis-full">
-        <h2 class="text-2xl px-5">Perfiles fuzzing creados</h2>
-      </div>
+  <div class="flex flex-row justify-center">
+    <div class="flex basis-full my-3 px-5">
+      <h2 class="text-2xl px-5 font-semibold">Perfiles fuzzing creados</h2>
     </div>
+  </div>
     <div>
       <table class="w-full text-center">
         <thead class="border-b border-t">
@@ -18,19 +16,13 @@
                 Nombre
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-                Configuración del fuzzer
-            </th>
-            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
                 Ruta del simulador
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-                Configuración del simulador
-            </th>
-            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-                Tiempo de ejecución
-            </th>
-            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
                 Casos de prueba predeterminados
+            </th>
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
+                Descripción
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
                 Ejecutar prueba
@@ -39,8 +31,16 @@
         </thead>
         <tbody>
           <% if (profiles.length > 0) { %>
-          <% profiles.forEach(element => { %>
-          <tr class="border-b">
+          <% profiles.forEach(function (element, i) { %>
+          <dialog class="w-3/6 h-fit top-1/6 p-5 transition bg-white rounded-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm" id="<%=element.name%> description">
+            <form method="dialog" >
+                <h3 id="modal-title" class="font-bold text-lg my-1"><%=element.name%></h3>
+                <hr style="background-color: black !important; height: 1px; border: none;">
+                <p id="modal-description" class="text-pretty my-1"><%=element.description%></p>
+                <button type="submit" class="mx-auto justify-center my-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Close</button>
+            </form>
+          </dialog>
+          <tr class="border-b <%=i % 2 === 0 ? "bg-gray-100" : "bg-gray-300" %>">
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
@@ -49,28 +49,17 @@
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-              <%=element.fuzzer%>
+              <%=element.path_simulator%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
-            <%=element.ex_sim%>
+              <%=element.data_source%>
             </td>
-            <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
-            >
-              <%=element.dir_sim%>
+            <td class="text-sm text-black font-medium px-6 py-4 break-words">
+              <button id="<%=element.name%> description" class="profile-description underline text-blue-600">Ver descripción</button>
             </td>
-            <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
-            >
-            <%=element.exec_time%>
-            </td>
-            <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
-            >
-            <%=element.preds_data%>
-            </td>
+          
             <td
               class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
             >
@@ -109,4 +98,5 @@
     </nav>
     <% } %>
   </div>
+  <script src="/javascripts/sanitizerModal.js"></script>
   

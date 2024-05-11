@@ -1,4 +1,6 @@
-reset_all_env_variables () {
+#!/bin/bash
+
+reset_all_env_variables(){
     for env_variables in "${analysis_comm}"; do
         unset $env_variables
     done
@@ -6,7 +8,7 @@ reset_all_env_variables () {
 
 web_scrapping(){
     if  [ "$1" == "obd" ] ; then 
-        python3 script/web/web_scrapper.py
+        python3 script/web/obd_web_scrapper.py
     elif [ "$1" == "can" ] ; then 
         echo "can"
     else
@@ -14,28 +16,45 @@ web_scrapping(){
     fi
 }
 
-compiling_simulator () {
+compiling_simulator() {
+    actual_dir="$(pwd)"
+
     if [[ -d "$1" ]] ; then
-        cd $1;
-        $2
-    elif
-        cd dirname $1
-        $2
+        cd "$1";
+        eval "$(echo "$2")"
+    elif [[ -f "$1" ]] ; then
+        cd "$(dirname "$1")"
+        eval "$(echo "$2")"
     else
         exit -1
     fi
+
+    cd "$actual_dir"
 }
+
+executing_fuzzing(){
+    eval "$(echo "$1")" 
+    chmod -R 777 outputs/
+}
+
+web_scrapper="$1"
+path_sim="$2"
+conf_comp="$3"
+conf_fuzz="$4"
+dirs_errs="$5"
+description="$6"
+name="$7"
 
 analysis_comm=("" "AFL_USE_ASAN" "AFL_USE_MSAN" "AFL_USE_UBSAN" "AFL_USE_CFISAN" "AFL_USE_TSAN")
 reset_all_env_variables
 
-web_scrapping $1
+web_scrapping "$web_scrapper"
 
-compiling_simulator $2 $3
+compiling_simulator "$path_sim" "$conf_comp"
 
-$4
+executing_fuzzing "$conf_fuzz"
 
-python3 script/data_modifier.py $1 $2 $3 $4 $5
+python3 script/data_modifier.py "$web_scrapper" "$path_sim" "$conf_comp" "$conf_fuzz" "$dirs_errs" "$description" "$name"
 
 
 

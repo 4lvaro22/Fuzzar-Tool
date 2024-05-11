@@ -3,6 +3,7 @@ import sys
 import os
 import re
 import uuid
+import datetime
 
 def get_sanitizer(file_path):
     with open(file_path) as file:
@@ -16,8 +17,9 @@ def get_sanitizer(file_path):
     return sanitizer
 
 def findings(dir_path):
-    findings = 0;
+    findings = 0
     for file in os.listdir(dir_path):
+        os.system("echo 'a'")
         if os.system(f'file -b {file}') == "data":
             findings += 1
 
@@ -32,7 +34,6 @@ def json_to_file(data_json):
             except json.JSONDecodeError:
                 data = []
         data.append(data_json)
-        data = sorted(data, key=lambda d: d['start_time'], reverse=True)
         with open(file_name, "w") as file:
             json.dump(data, file)
     else:
@@ -40,23 +41,28 @@ def json_to_file(data_json):
             data_json = [data_json]
             json.dump(data_json, file)
 
-data_source = sys.argv[1]
-path = sys.argv[2]
-name = sys.argv[3]
-conf_fuzzing = sys.argv[4]
-description = sys.argv[5]
+if __name__ == "__main__":
+    data_source = sys.argv[1]
+    path = sys.argv[2]
+    conf_comp = sys.argv[3]
+    conf_fuzz = sys.argv[4]
+    dirs_errs = sys.argv[5]
+    description = sys.argv[6]
+    name = sys.argv[7]
 
+    analisys_data: dict = {}
 
-analisys_data: dict = {}
+    analisys_data["path"] = path
+    analisys_data["name"] = name
+    analisys_data["conf_fuzzing"] = conf_fuzz
+    analisys_data["conf_compilator"] = conf_comp
+    analisys_data["web_scrapper"] = data_source
+    analisys_data["description"] = description
+    analisys_data["dirs_errors"] = dirs_errs
+    analisys_data["findings"] = findings(dirs_errs)
+    analisys_data["id"] = str(uuid.uuid4())
+    analisys_data["date"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
-analisys_data["path"] = path
-analisys_data["name"] = name
-analisys_data["conf_fuzzing"] = conf_fuzzing
-analisys_data["data_source"] = data_source
-analisys_data["description"] = description
-analisys_data["findings"] = findings(path)
-analisys_data["id"] = str(uuid.uuid4())
-
-json_to_file(analisys_data)
+    json_to_file(analisys_data)
 
 

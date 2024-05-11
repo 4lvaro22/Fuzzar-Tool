@@ -2,6 +2,7 @@ const fs = require('fs').promises;
 const controller = {};
 const path = require('path');
 const { exec } = require("child_process");
+const { Console } = require('console');
 const filePathProfiles = path.resolve(__dirname, "../profiles.json");
 
 controller.getProfiles = async function (req, res, next) {
@@ -38,7 +39,9 @@ controller.executionProfile = async function (req, res, next) {
 
   executeProfile = profilesData.find(element => element.name === req.params.name)
 
-  exec(`sh webapp.sh ${executeProfile.data_source} ${executeProfile.path_simulator} ${executeProfile.config_compilator} ${executeProfile.config_fuzzing}`, async (err, stdout, stderr) => {
+  console.log(executeProfile.config_compilator)
+
+  exec(`bash webapp.sh "${executeProfile.data_source}" "${executeProfile.path_simulator}" "${executeProfile.config_compilator}" "${executeProfile.config_fuzzing}" "${executeProfile.errors_directory}" "${executeProfile.description}" "${executeProfile.name}"`, async (err, stdout, stderr) => {
     if (err) console.error(err)
     console.log(stdout);
     res.redirect("/");
@@ -65,7 +68,7 @@ controller.saveProfile = async function (req, res, next) {
 
     let dirErrs = req.body.dirErrs;
     let confComp = req.body.confComp;
-    let confFuzzer = req.body.confFuzzer;
+    let confFuzzer = req.body.confFuzz;
     let pathSim = req.body.pathSim;
     let confSim = req.body.confSim;
     let data = req.body.data;
@@ -77,7 +80,6 @@ controller.saveProfile = async function (req, res, next) {
       "config_compilator": confComp,
       "config_fuzzer": confFuzzer,
       "path_simulator": pathSim,
-      "config_simulator": confSim,
       "data_source": data,
       "description": description
     };

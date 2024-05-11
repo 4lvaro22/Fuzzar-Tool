@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto p-8 bg-gray-400 rounded-md shadow-md my-5">
+<div class="max-w-7xl mx-auto p-8 bg-emerald-100 rounded-md my-5 shadow-xl outline outline-1">
   <h2 class="text-2xl font-semibold mb-6">Crear perfil fuzzer</h2>
   <form action="/profile/save" method="post">
 
@@ -60,13 +60,13 @@
         />
       </div>
       <div class="mb-4 columns-2xl ms-2">
-        <label for="email" class="block text-gray-700 text-sm font-bold mb-2"
+        <label for="confFuzz" class="block text-gray-700 text-sm font-bold mb-2"
           >Configuración del fuzzing</label
         >
         <input
           type="text"
-          id="confSim"
-          name="confSim"
+          id="confFuzz"
+          name="confFuzz"
           placeholder="afl-fuzz -i inputs -o results/outputs/ -- obdsim -t /dev/stdin"
           required
           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
