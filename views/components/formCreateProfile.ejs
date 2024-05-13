@@ -1,10 +1,10 @@
-<div class="max-w-7xl mx-auto p-8 bg-emerald-100 rounded-md my-5 shadow-xl outline outline-1">
+<div class="max-w-7xl mx-auto p-8 bg-cyan-950 opacity-95 rounded-md my-5 shadow-xl outline outline-1 text-white">
   <h2 class="text-2xl font-semibold mb-6">Crear perfil fuzzer</h2>
   <form action="/profile/save" method="post">
 
     <div class="flex flex-row content-around">
       <div class="mb-4 columns-2xl me-2">
-        <label for="name" class="block text-gray-700 text-sm font-bold mb-2"
+        <label for="name" class="block text-sm font-bold mb-2"
           >Nombre del perfil</label
         >
         <input
@@ -17,7 +17,7 @@
         />
       </div>
       <div class="mb-4 columns-2xl ms-2">
-        <label for="dirErrs" class="block text-gray-700 text-sm font-bold mb-2"
+        <label for="dirErrs" class="block text-sm font-bold mb-2"
           >Directorio de los errores</label
         >
         <input
@@ -32,7 +32,7 @@
     </div>
     <div class="flex flex-row content-around">
       <div class="mb-4 columns-7xl me-2">
-        <label for="confComp" class="block text-gray-700 text-sm font-bold mb-2"
+        <label for="confComp" class="block text-sm font-bold mb-2"
           >Configuración de la herramienta de compilaje</label
         >
         <input
@@ -47,7 +47,7 @@
     </div>
     <div class="flex flex-row content-around">
       <div class="mb-4 columns-2xl me-2">
-        <label for="pathSim" class="block text-gray-700 text-sm font-bold mb-2"
+        <label for="pathSim" class="block text-sm font-bold mb-2"
           >Directorio raíz del simulador o fichero</label
         >
         <input
@@ -60,7 +60,7 @@
         />
       </div>
       <div class="mb-4 columns-2xl ms-2">
-        <label for="confFuzz" class="block text-gray-700 text-sm font-bold mb-2"
+        <label for="confFuzz" class="block text-sm font-bold mb-2"
           >Configuración del fuzzing</label
         >
         <input
@@ -74,7 +74,7 @@
       </div>
     </div>
     <div class="mb-4">
-      <label for="data" class="block text-gray-700 text-sm font-bold mb-2"
+      <label for="data" class="block text-sm font-bold mb-2"
         >Fuente de datos predeterminados</label
       >
       <input id="obd" type="radio" name="data" value="OBD-II" />
@@ -85,7 +85,7 @@
       <label for="no">No predeterminado</label>
     </div>
     <div class="mb-6">
-      <label for="description" class="block text-gray-700 text-sm font-bold mb-2"
+      <label for="description" class="block text-sm font-bold mb-2"
         >Descripción de la prueba</label
       >
       <textarea
@@ -97,9 +97,9 @@
     </div>
     <button
       type="submit"
-      class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
+      class="mx-auto justify-center my-2 text-dark font-semibold py-2 px-8 text-xl bg-cyan-500 hover:bg-cyan-400 text-white border-b-4 border-cyan-700 hover:border-cyan-500 rounded"
     >
-      Send Message
+      Crear
     </button>
   </form>
 </div>

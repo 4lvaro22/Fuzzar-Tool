@@ -3,15 +3,13 @@
 <% backgroundRunning="bg-purple-100 border-purple-200" %>
 
 <div class="container min-w-full">
-    <div class="flex flex-row justify-center">
-      <div class="flex basis-full my-3 px-5">
-        <h2 class="text-2xl px-5 font-semibold">Análisis realizados</h2>
-      </div>
+    <div class="flex flex-row justify-center my-4">
+        <h2 class="text-2xl px-5 font-bold">Análisis realizados</h2>
     </div>
     <div>
       <table class="w-full text-center">
         <thead class="border-b border-t">
-          <tr class="bg-indigo-200">
+          <tr>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
               Id
             </th>
@@ -37,7 +35,7 @@
         </thead>
         <tbody>
           <% if (analysis.length > 0) { %>
-          <% analysis.forEach(element => { %>
+          <% analysis.forEach(function (element, i) { %>
           <dialog class="w-3/6 h-fit top-1/6 p-5 transition bg-white rounded-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm" id="<%=element.name%> description">
             <form method="dialog" >
                 <h3 id="modal-title" class="font-bold text-lg my-1"><%=element.name%></h3>
@@ -46,39 +44,39 @@
                 <button type="submit" class="mx-auto justify-center my-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Close</button>
             </form>
           </dialog>
-          <tr class="border-b <%= element.status == "Running" ? backgroundRunning : (element.findings <= 0 ? backgroundSuccess : backgroundFailed) %>">
+          <tr class="border-b <%=i % 2 === 0 ? "bg-gray-100" : "bg-gray-300" %>">
             <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
               <%=element.id%>
             </td>
             <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
               <%=element.date%>
             </td>
             <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
               <%=element.name%>
             </td>
             <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
               <button id="<%=element.name%> description" class="profile-description underline text-blue-600">Ver descripción</button>
             </td>
             <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
               <%=element.findings%>
             </td>
             <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap <%= element.status == "Running" ? backgroundRunning : (element.findings <= 0 ? backgroundSuccess : backgroundFailed) %>"
             >
               <%=element.findings == 0 ? "Superada" : "Fallada"%>
             </td>
             <td
-              class="text-sm text-black font-medium px-6 py-4 whitespace-nowrap"
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
               <a href="/delete/<%=element.id%>"><button class="mx-auto justify-center my-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Borrar</button></a>
             </td>

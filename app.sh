@@ -51,38 +51,6 @@ ask_sanitizer () {
     done
 }
 
-compiling_simulator () {
-    while true; do
-        case $reply_build_system in
-            1)
-            cd "${path}"; CC=afl-gcc-fast CXX=afl-g++-fast ./configure --disable-shared
-            ;;
-
-            2)
-                cd "${path}"; 
-                sudo rm -r build -f; 
-                mkdir build; 
-                cd build;
-                echo -e "$blue_color[+]$grey_color Compilando la aplicación. Esto puede tardar varios minutos...";
-                cmake -DCMAKE_C_COMPILER=afl-gcc-fast -DCMAKE_CXX_COMPILER=afl-g++-fast .. > /dev/null 2>&1; 
-                echo -e "$green_color[✓]$grey_color Aplicación compilada!!";
-                echo -e "$blue_color[+]$grey_color Instalando la aplicación. Esto puede tardar varios minutos...";
-                sudo make install > /dev/null 2>&1;
-                echo -e "$green_color[✓]$grey_color Aplicación instalada!!";
-                echo -e "$blue_color[+]$grey_color Verifica su instalación en el directorio bin de su usuario.";
-            ;;
-
-            3)
-            cd "${path}"; CC=afl-gcc-fast CXX=afl-g++-fast meson
-            ;;
-        esac
-    
-        # Condition to exit the loop
-        if [ $? -eq 0 ]; then
-            break
-        fi
-    done
-}
 
 afl() {
     reset_all_env_variables
@@ -139,22 +107,9 @@ help()
 {
    echo -e "\nsudo bash app.sh [ opciones ]"
    echo -e "\nopciones:"
-   echo "-f <nombre_fuzzer>   Seleccionar el fuzzer para los análisis. (Por defecto: AFLPlusPlus)."
    echo "-h                   Muestra una ayuda sobre los argumentos de la herramienta."
-   echo "-l                   Muestra los nombres de los fuzzers disponibles."
    echo "-s                   Muestra los análisis guardados en memoria."
-   echo "-t <tiempo_minutos>  Establecer el tiempo (en minutos) para cada análisis realizado. (Por defecto: 30 min.)."
    echo "-v                   Muestra la versión del software."
-}
-
-fuzzer_list()
-{
-    fuzzer_counter=0
-    echo -e "\nFuzzers disponibles: \n"
-    for fuzzer_it in "${fuzzers[@]}"; do
-        echo -e "$fuzzer_counter   $fuzzer_it"
-        fuzzer_counter=$((fuzzer_counter + 1));
-    done
 }
 
 version()
@@ -195,7 +150,6 @@ cleanup() {
     exit 0
 }
 
-
 if  [ $(id -u) -ne 0 ]; then 
     echo -e "\n$red_color[-]$reset_color Debes ser usuario root para ejecutar el análisis."
     echo -e "$blue_color[+]$grey_color Prueba ejecutando$purple_color sudo bash $0"
@@ -204,43 +158,14 @@ fi
 
 initialize_variables
 
-while getopts "h f: v t: l s --" option; do
+while getopts "hvs --" option; do
    case $option in
     h)
         help
         exit;;
-    l) 
-        fuzzer_list
-        exit;;
-    f)
-        fuzzer="$OPTARG"
-
-        bool_cf=0
-        for fuzzer_it in "${fuzzers[@]}"; do
-            if [[ $fuzzer_it == $fuzzer ]]; then
-                bool_cf=1
-            fi
-        done
-
-        if [[ ! $fuzzer =~ ^[a-z]+$ || "$bool_cf" -eq 0 ]]; then
-            echo -ne "\n$red_color[-]$reset_color Error en el valor del fuzzer."
-            echo -ne "\n$grey_color[!]$reset_color Si estás ejecutando sudo bash app.sh -ft, prueba a ejecutar $purple_color sudo bash app.sh -f <nombre_fuzzer> -t <tiempo_minutos>$reset_color"
-            echo -ne "\n$grey_color[!]$reset_color En otro caso, deberías proporcionar un fuzzer válido. Prueba a ejecutar $purple_color sudo bash app.sh -l$reset_color para ver los fuzzers existentes.\n"
-            exit
-        fi;;
     s)
         echo -en "$(jq length data.json) análisis guardados.\n"
         exit;;
-    t)
-        execution_time="$OPTARG"
-        if [[ ! "$execution_time" =~ ^[0-9]+$ ]]; then
-            echo -ne "\n$red_color[-]$reset_color Error en el valor del tiempo."
-            echo -ne "\n$grey_color[!]$grey_color Si estás ejecutando sudo bash app.sh -ft, prueba a ejecutar $purple_color sudo bash app.sh -f <nombre_fuzzer> -t <tiempo_minutos>$reset_color"
-            echo -ne "\n$grey_color[!]$grey_color En otro caso, deberías proporcionar un tiempo en minutos válido.\n"
-            exit
-        fi
-
-        execution_time=$((tiempo * 60));;
     v)
         version
         exit;;
@@ -254,19 +179,11 @@ trap 'cleanup' SIGINT SIGTERM
 clear
 cat banner/logo.asc
 
-if [[ -d "/results" ]]
-then
-   mkdir results;
-   chmod 777 results;
-fi
-
 if [ -f "data.json" ]
 then
    touch data.json;
    chmod 777 data.json;
 fi
-
-execution_time=1
 
 echo -ne "\n$yellow_color[?]$grey_color Quieres desplegar la visualización de datos mediante una aplicación web? (s/N): "
 read app_web

@@ -18,9 +18,12 @@ def get_sanitizer(file_path):
 
 def findings(dir_path):
     findings = 0
+
     for file in os.listdir(dir_path):
-        os.system("echo 'a'")
-        if os.system(f'file -b {file}') == "data":
+        pipe = os.popen(f'file -b {dir_path}/{file}')
+        data_type = pipe.read().strip()
+        
+        if data_type == 'data':
             findings += 1
 
     return findings
@@ -42,6 +45,7 @@ def json_to_file(data_json):
             json.dump(data_json, file)
 
 if __name__ == "__main__":
+
     data_source = sys.argv[1]
     path = sys.argv[2]
     conf_comp = sys.argv[3]

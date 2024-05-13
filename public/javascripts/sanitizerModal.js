@@ -5,8 +5,14 @@ for (var i = 0; i < descriptions.length; i++) {
 }
 
 function linkClick(event) {
-    document.get
-    modal = document.getElementsByTagName("dialog")[0];
-    console.log(modal)
+    modalsList = document.getElementsByTagName("dialog");
+    modal = undefined;
+    
+    for(i = 0; i < modalsList.length; i ++){
+        if(event.target.id === modalsList[i].id){
+            modal = modalsList[i];
+        }
+    }
+
     modal.showModal();
 }

@@ -1,13 +1,12 @@
 const fs = require('fs').promises;
 const controller = {};
 const path = require('path');
-const { exec } = require("child_process");
-const { Console } = require('console');
+const { exec, execSync } = require("child_process");
 const filePathProfiles = path.resolve(__dirname, "../profiles.json");
 
 controller.getProfiles = async function (req, res, next) {
   var profilesData = []
-  
+
   try {
     var profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
     profilesData = JSON.parse(profiles);
@@ -34,35 +33,34 @@ controller.getProfiles = async function (req, res, next) {
 };
 
 controller.executionProfile = async function (req, res, next) {
-  var profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
-  profilesData = JSON.parse(profiles);
+  try {
+    var profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
+    profilesData = JSON.parse(profiles);
 
-  executeProfile = profilesData.find(element => element.name === req.params.name)
+    executeProfile = profilesData.find(element => element.name === req.params.name)
 
-  console.log(executeProfile.config_compilator)
-
-  exec(`bash webapp.sh "${executeProfile.data_source}" "${executeProfile.path_simulator}" "${executeProfile.config_compilator}" "${executeProfile.config_fuzzing}" "${executeProfile.errors_directory}" "${executeProfile.description}" "${executeProfile.name}"`, async (err, stdout, stderr) => {
-    if (err) console.error(err)
-    console.log(stdout);
-    res.redirect("/");
-  });
+    execSync(`bash webapp.sh "${executeProfile.data_source}" "${executeProfile.path_simulator}" "${executeProfile.config_compilator}" "${executeProfile.config_fuzzing}" "${executeProfile.errors_directory}" "${executeProfile.description}" "${executeProfile.name}"`, async (err, stdout, stderr) => {
+      if (err) console.error(err)
+    });
+    res.redirect("/analysis");
+  } catch (err) {
+    console.log(err)
+  }
 };
 
 controller.newProfile = async function (req, res, next) {
-  res.render("create.ejs", {analysis: undefined});
+  res.render("create.ejs", { analysis: undefined });
 };
 
 controller.saveProfile = async function (req, res, next) {
-  try{
+  try {
     var profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
     profilesData = JSON.parse(profiles);
 
     let name = req.body.name;
     existProfile = profilesData.filter(element => element.name.search(RegExp("^" + name + "(?:\(\d+\))*$")) !== -1)
 
-    console.log(existProfile)
-    
-    if (existProfile !== undefined){
+    if (existProfile.length !== 0) {
       name += " (" + existProfile.length + ")"
     }
 
@@ -70,7 +68,6 @@ controller.saveProfile = async function (req, res, next) {
     let confComp = req.body.confComp;
     let confFuzzer = req.body.confFuzz;
     let pathSim = req.body.pathSim;
-    let confSim = req.body.confSim;
     let data = req.body.data;
     let description = req.body.description;
 
@@ -87,12 +84,32 @@ controller.saveProfile = async function (req, res, next) {
     profilesData.push(newProfile);
     await fs.writeFile(filePathProfiles, JSON.stringify(profilesData, null, 2), { encoding: 'utf-8' });
 
-    res.redirect("/")
+    res.redirect("/profile")
 
-  }catch (error) {
+  } catch (error) {
     res.send("Se ha producido un error " + error);
   }
 
+};
+
+controller.deleteProfile = async function (req, res, next) {
+  try {
+    var profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
+    profilesData = JSON.parse(profiles);
+
+    var removedArray = profilesData.filter((obj) => obj.name !== req.params.name);
+    removedArray = JSON.stringify(removedArray)
+
+    try {
+      fs.writeFile(filePathProfiles, removedArray, 'utf-8')
+    } catch (err) {
+      console.error(err);
+    }
+
+    res.redirect("/profile");
+  } catch (error) {
+    res.send("Se ha producido un error. " + error);
+  }
 };
 
 module.exports = controller;

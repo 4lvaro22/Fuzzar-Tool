@@ -2,7 +2,6 @@ const fs = require('fs').promises;
 const controller = {};
 const path = require('path');
 const filePathTestDone = path.resolve(__dirname, "../data.json");
-const json2csv = require('json-2-csv')
 
 controller.getAnalysis = async function (req, res, next) {
   var databaseData = []
@@ -22,14 +21,14 @@ controller.getAnalysis = async function (req, res, next) {
     actualPage = 1;
     initialData = 0;
     lastData = 10;
-    res.redirect("/");
+    res.redirect("/analysis");
   } else {
     actualPage = req.params.page;
     initialData = 10 * (req.params.page - 1);
     lastData = 10 * req.params.page;
   }
 
-  res.render("index.ejs", { totalAnalysis: databaseData, analysis: databaseData.slice(initialData, lastData), actualPage: actualPage, initialData: initialData, lastData: lastData, profiles: undefined  });
+  res.render("tests.ejs", { totalAnalysis: databaseData, analysis: databaseData.slice(initialData, lastData), actualPage: actualPage, initialData: initialData, lastData: lastData, profiles: undefined  });
 
 };
 
@@ -49,20 +48,10 @@ controller.deleteAnalysis = async function (req, res, next) {
       console.error(err);
     }
 
-    res.redirect("/");
+    res.redirect("/analysis");
   } catch (error) {
     res.send("Se ha producido un error. " + error);
   }
-};
-
-controller.downloadCSV = async function (req, res, next) {
-  const data = await fs.readFile(filePathTestDone, { encoding: 'utf-8' });
-  const databaseData = JSON.parse(data);
-  const csv = await json2csv.json2csv(databaseData);
-
-  res.setHeader("Content-disposition", "attachment; filename=data.csv");
-  res.set("Content-Type", "text/csv");
-  res.status(200).send(csv);
 };
 
 module.exports = controller;
