@@ -4,7 +4,7 @@
 
 <div class="container min-w-full">
     <div class="flex flex-row justify-center my-4">
-      <h2 class="text-2xl px-5 font-bold">Análisis realizados</h2>
+      <h2 class="text-2xl px-5 font-bold">Perfiles creados</h2>
     </div>
     <div>
       <table class="w-full text-center">
@@ -85,18 +85,18 @@
         <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
           <% if (actualPage != 1){%>
             <li>
-                <a href="/<%=Number(actualPage)-1%>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-black bg-white border rounded-s-lg">Previous</a>
+                <a href="/profile/<%=Number(actualPage)-1%>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-black bg-white border rounded-s-lg">Previous</a>
             </li>
             <% } %>
             <% page = 1 %>
             <% _.range(0, totalProfiles.length, 10).forEach(element => { %>
               <li>
-                <a href="/<%=page%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border"><%= page %></a>
+                <a href="/profile/<%=page%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border"><%= page %></a>
               </li>
               <% page ++; %>
             <% }); %>
             <% if (actualPage != page-1){%>
-        <a href="/<%=Number(actualPage)+1%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border rounded-e-lg">Next</a>
+        <a href="/profile/<%=Number(actualPage)+1%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border rounded-e-lg">Next</a>
             </li>
             <% } %>
         </ul>
