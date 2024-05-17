@@ -32,7 +32,8 @@ reset_all_env_variables () {
 
 execute_web_app(){
     npm start -s &
-    printf "\n$blue_color[+]$grey_color Tiene los datos listos para su visualización en $cyan_color\e]8;;http://localhost:3000\ahttp://localhost:3000\e]8;;\a$grey_color.\n"
+    printf "\n$blue_color[+]$grey_color Tiene disponible la app web en $cyan_color\e]8;;http://localhost:3000\ahttp://localhost:3000\e]8;;\a$grey_color."
+    echo -ne "\n$cyan_color[!]$grey_color Aviso: Las pruebas realizadas por terminal no crean perfiles fuzzers, para ello utilice la versión por app web.\n"
 }
 
 help()
@@ -122,9 +123,6 @@ if  [ $(id -u) -ne 0 ]; then
     exit -1
 fi
 
-execute_web_app
-initialize_variables
-
 while getopts "hvs --" option; do
    case $option in
     h)
@@ -145,6 +143,9 @@ done
 trap 'cleanup' SIGINT SIGTERM
 clear
 cat banner/logo.asc
+
+execute_web_app
+initialize_variables
 
 if [ -f "data.json" ]
 then

@@ -4,21 +4,25 @@
 
     <div class="flex flex-row content-around">
       <div class="mb-4 columns-2xl me-2">
-        <label for="name" class="block text-sm font-bold mb-2"
-          >Nombre del perfil</label
-        >
+        <label for="name" class="flex text-md font-bold mb-2 justify-between"
+          >
+          <span class="inline-block align-middle">Nombre del perfil</span> 
+          <span id="info-name" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span>
+        </label>
         <input
           type="text"
           id="name"
           name="name"
           placeholder="OBD-II Fuzzing with AFL"
           required
-          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
       <div class="mb-4 columns-2xl ms-2">
-        <label for="dirErrs" class="block text-sm font-bold mb-2"
-          >Directorio de los errores</label
+        <label for="dirErrs" class="flex text-md font-bold mb-2 justify-between"
+          >
+          <span class="inline-block align-middle">Directorio de los errores</span> 
+          <span id="info-direrrs" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
         >
         <input
           type="text"
@@ -26,29 +30,36 @@
           name="dirErrs"
           placeholder="/outputs/default/crashes"
           required
-          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
     </div>
     <div class="flex flex-row content-around">
-      <div class="mb-4 columns-7xl me-2">
-        <label for="confComp" class="block text-sm font-bold mb-2"
-          >Configuración de la herramienta de compilaje</label
-        >
+      <div class="mb-4 columns-7xl">
+        <label for="confComp" class="flex text-md font-bold mb-2 justify-between"
+          >
+            <span class="inline-block align-middle">Configuración de la herramienta de compilaje</span> 
+            <span>
+              <dialog class="hidden focus-within:relative text-sm relative align-middle text-black rounded-full bg-blue-200 outline outline-1 outline-black px-4 py-2 w-3 text-pretty text-center max-w-xs">Comandos de la configuración con los que se pretende a compilar la aplicación bajo pruebas.</dialog>
+              <span id="info-confcomp" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span>
+            </span>
+          </label>
         <input
           type="text"
           id="confComp"
           name="confComp"
           placeholder="mkdir build; cd build; cmake -DCMAKE_C_COMPILER=afl-cc -DCMAKE_CXX_COMPILER=afl-c++ .."
           required
-          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
     </div>
     <div class="flex flex-row content-around">
       <div class="mb-4 columns-2xl me-2">
-        <label for="pathSim" class="block text-sm font-bold mb-2"
-          >Directorio raíz del simulador o fichero</label
+        <label for="pathSim" class="flex text-md font-bold mb-2 justify-between"
+          ><span class="inline-block align-middle">Directorio raíz del simulador o fichero</span> 
+          <span id="info-pathsim" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
+        ></label
         >
         <input
           type="text"
@@ -56,12 +67,14 @@
           name="pathSim"
           placeholder="/home/alvaro/TFG/obdgpslogger"
           required
-          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
       <div class="mb-4 columns-2xl ms-2">
-        <label for="confFuzz" class="block text-sm font-bold mb-2"
-          >Configuración del fuzzing</label
+        <label for="confFuzz" class="flex text-md font-bold mb-2 justify-between"
+          ><span class="inline-block align-middle">Configuración del fuzzing</span> 
+          <span id="info-conffuzz" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
+        ></label
         >
         <input
           type="text"
@@ -69,13 +82,15 @@
           name="confFuzz"
           placeholder="afl-fuzz -i inputs -o results/outputs/ -- obdsim -t /dev/stdin"
           required
-          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+          class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
     </div>
     <div class="mb-4">
-      <label for="data" class="block text-sm font-bold mb-2"
-        >Fuente de datos predeterminados</label
+      <label for="data" class="flex text-md font-bold mb-2 justify-between"
+        ><span class="inline-block align-middle">Fuente de datos predeterminados</span> 
+        <span id="info-sourcedata" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
+      ></label
       >
       <input id="obd" type="radio" name="data" value="OBD-II" />
       <label for="css">OBD-II</label> <br />
@@ -85,21 +100,27 @@
       <label for="no">No predeterminado</label>
     </div>
     <div class="mb-6">
-      <label for="description" class="block text-sm font-bold mb-2"
-        >Descripción de la prueba</label
+      <label for="description" class="flex text-md font-bold mb-2 justify-between"
+        ><span class="inline-block align-middle">Descripción de la prueba</span> 
+        <span id="info-descrip" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
+      ></label
       >
       <textarea
         id="description"
         name="description"
         rows="4"
-        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
       ></textarea>
     </div>
     <button
       type="submit"
-      class="mx-auto justify-center my-2 text-dark font-semibold py-2 px-8 text-xl bg-cyan-500 hover:bg-cyan-400 text-white border-b-4 border-cyan-700 hover:border-cyan-500 rounded"
+      class="mx-auto justify-center my-2 font-semibold py-2 px-8 text-xl bg-cyan-500 hover:bg-cyan-400 text-white border-b-4 border-cyan-700 hover:border-cyan-500 rounded"
     >
       Crear
     </button>
   </form>
 </div>
+<link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script src="https://unpkg.com/tippy.js@6"></script>
+<script src="/javascripts/tooltip.js" type="module"></script>
