@@ -19,6 +19,7 @@ web_scrapping(){
 compiling_simulator() {
     if [[ -d "$1" ]] ; then
         cd "$1";
+        rm -rf build
         eval "$(echo "$2")"
         cd "$actual_dir"
     elif [[ -f "$1" ]] ; then
