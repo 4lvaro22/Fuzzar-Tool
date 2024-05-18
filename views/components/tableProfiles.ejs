@@ -68,7 +68,7 @@
             <td
               class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
-              <form method="post" action="/profile/execute/<%=element.name%>" id="ejecutar-form"><button class="mx-auto justify-center my-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded" type="submit">Ejecutar</button></form>
+              <form method="post" action="/profile/execute/<%=element.name%>" class="ejecutar-form"><button class="mx-auto justify-center my-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded" type="submit">Ejecutar</button></form>
             </td>
           </tr>
           <% }); %>
@@ -114,6 +114,8 @@
     }
   </script>
   <script>
-    const executeForm = document.getElementById('ejecutar-form');
-    executeForm.addEventListener('submit', (event) => confirmExecution(event.target));
+    const executeForm = document.getElementsByClassName('ejecutar-form');
+    for (let i = 0; i < executeForm.length; i++) {
+      executeForm[i].addEventListener('submit', (event) => confirmExecution(event.target));
+    }    
   </script>
