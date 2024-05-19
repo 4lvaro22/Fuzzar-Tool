@@ -36,3 +36,4 @@ outputs/
 results/
 inputs/
 !package.json
+*.csv

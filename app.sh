@@ -17,19 +17,6 @@ reset_all_env_variables () {
     done
 }
 
-# afl() {
-#     reset_all_env_variables
-#     ask_sanitizer
-#     export "${analysis_comm[reply_sanitizer-1]}=1"
-#     echo -e "$blue_color[+]$grey_color Fuzzer escogido AFLPlusPlus."
-#     echo -e "$blue_color[+]$grey_color Exploración de errores escogida "${analysis[reply_sanitizer]}"."
-#     echo -e "$blue_color[+]$grey_color Tiempo estimado "${execution_time}" segundos."
-#     echo -e "$blue_color[+]$grey_color Ejecutando análisis..."
-#     current_date=$(date +"%d%m%Y-%H%M%S")
-#     afl-fuzz -V $execution_time -i inputs/ -o "results/result-"$current_date"" -- $1 -t /dev/stdin > /dev/null 2>&1;
-#     finilizing_rutine
-# }
-
 execute_web_app(){
     npm start -s &
     printf "\n$blue_color[+]$grey_color Tiene disponible la app web en $cyan_color\e]8;;http://localhost:3000\ahttp://localhost:3000\e]8;;\a$grey_color."
