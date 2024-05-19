@@ -25,7 +25,6 @@ Además, quiero agradecer el gran impulso que me han brindado para adentrarme en
 
 Enormemente agradecido con vosotros!
 
-
 ## Introducción del Trabajo de Fin de Grado
 El TFG consiste en el estudio de vulnerabilidades en el entorno vehicular. Como ya sabemos, los vehículos son máquinas esenciales en nuestra vida diaria, pero tras ellos no solo existen mecanismos para que sea un objeto funcional, sino que éstos cuentan con un gran números de dispositivos electrónicos cuyas vulnerabilidades pueden ser aprovechadas por atacantes.  
   
@@ -48,7 +47,7 @@ Se aconseja visitar la [documentación](https://github.com/4lvaro22/Fuzzar-Tool/
 1. Preparación e instalación de la herramienta. [Vamos allá!](https://github.com/4lvaro22/Fuzzar-Tool/blob/main/docs/INSTALL.md)
 2. Ejecutar el bash script principal: ```sudo bash app.sh```
 3. Utilizar la opción por terminal o vía web.
-4. Los datos de las pruebas se guardarán en el fichero ```data.csv```. 
+4. Los datos de los análisis realizados se guardarán en el fichero ```data.csv```. 
 5. Disfrutar del fuzzing❗
 
 ## Referencias interesantes

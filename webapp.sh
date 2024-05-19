@@ -7,12 +7,14 @@ reset_all_env_variables(){
 }
 
 web_scrapping(){
+    if [[ -d "inputs" ]] ; then
+        rm -rf inputs/*
+
     if  [ "$1" == "OBD-II" ] ; then 
         python3 script/web/obd_web_scrapper.py
+        rm -f inputs/candump_output.txt
     elif [ "$1" == "CAN Bus" ] ; then 
-        echo "can"
-    else
-        echo "NO"
+        python3 script/web/canbus_scrapper.py
     fi
 }
 
@@ -23,9 +25,7 @@ compiling_simulator() {
         eval "$(echo "$2")"
         cd "$actual_dir"
     elif [[ -f "$1" ]] ; then
-        pwd
         cd "$(dirname "$1")"
-        pwd
         eval "$(echo "$2")"
     else
         exit -1
@@ -33,7 +33,6 @@ compiling_simulator() {
 }
 
 executing_fuzzing(){
-    pwd
     echo "$1"
     eval "$(echo "$1")" > /dev/null 2>&1
     chmod -R 777 "$2"
