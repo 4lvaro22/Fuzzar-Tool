@@ -9,9 +9,12 @@ reset_all_env_variables(){
 web_scrapping(){
     if [[ -d "inputs" ]] ; then
         rm -rf inputs/*
+    fi
 
     if  [ "$1" == "OBD-II" ] ; then 
-        python3 script/web/obd_web_scrapper.py
+        pwd
+        ls
+        python3 script/data/obd_web_scrapper.py
         rm -f inputs/candump_output.txt
     elif [ "$1" == "CAN Bus" ] ; then 
         python3 script/web/canbus_scrapper.py
@@ -59,8 +62,6 @@ compiling_simulator "$path_sim" "$conf_comp"
 executing_fuzzing "$conf_fuzz" "$dirs_errs"
 
 cd "$actual_dir"
-
-python3 script/data_modifier.py "$web_scrapper" "$path_sim" "$conf_comp" "$conf_fuzz" "$dirs_errs" "$description" "$name"
 
 
 

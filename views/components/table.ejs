@@ -1,6 +1,7 @@
-<% backgroundFailed="bg-red-100 border-red-200" %>
-<% backgroundSuccess="bg-green-100 border-green-200" %>
-<% backgroundRunning="bg-purple-100 border-purple-200" %>
+<% backgroundFailed="bg-red-200 border-red-400" %>
+<% backgroundNoVuln="bg-green-200 border-green-400" %>
+<% backgroundRunning="bg-purple-200 border-purple-400" %>
+<% backgroundVuln="bg-orange-200 border-orange-400" %>
 
 <div class="container min-w-full">
     <div class="flex flex-row justify-center my-4">
@@ -71,9 +72,9 @@
               <%=element.findings%>
             </td>
             <td
-              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap <%= element.status == "Running" ? backgroundRunning : (element.findings <= 0 ? backgroundSuccess : backgroundFailed) %>"
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap <%= element.findings === 'error' ? backgroundFailed : (element.findings <= 0 ? backgroundNoVuln : backgroundVuln) %>"
             >
-              <%=element.findings == 0 ? "Superada" : "Fallada"%>
+              <%=element.findings == 0 ? "No vulnerable" : (element.findings == 'error' ? 'Fallida' : 'Vulnerable')%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"

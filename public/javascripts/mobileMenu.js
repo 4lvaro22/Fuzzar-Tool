@@ -4,7 +4,7 @@ svgMobileMenuOpen = document.getElementById('button-mobile-menu-open')
 svgMobileMenuClose = document.getElementById('button-mobile-menu-close')
 
 mobileMenubtn.addEventListener('click', mobileMenuClick, false);
-console.log(svgMobileMenuOpen)
+
 function mobileMenuClick(event){
     mobileMenu.classList.toggle("hidden");
     svgMobileMenuClose.classList.toggle("hidden");

@@ -33,9 +33,10 @@ def findings(dir_path):
             
             findings += 1
 
-
-
-    return findings, content
+    return {
+        "findings": findings,
+        "content": content
+    }
 
 def json_to_file(data_json):
     file_name = "data.json"
@@ -62,6 +63,7 @@ if __name__ == "__main__":
     dirs_errs = sys.argv[5]
     description = sys.argv[6]
     name = sys.argv[7]
+    execution_error = sys.argv[8]
 
     analisys_data: dict = {}
 
@@ -72,24 +74,28 @@ if __name__ == "__main__":
     analisys_data["web_scrapper"] = data_source
     analisys_data["description"] = description
     analisys_data["dirs_errors"] = dirs_errs
-    analisys_data["findings"], analisys_data["invalid_inputs"] = findings(dirs_errs)
     analisys_data["id"] = str(uuid.uuid4())
     analisys_data["date"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
-    print(analisys_data)
+    findings = findings(dirs_errs) if execution_error != "error" else  {"findings": 'error', "content": None}
 
-    write_headers_bool = os.path.exists('data.csv')
+    analisys_data["findings"] = findings["findings"]
+    analisys_data["invalid_inputs"] = findings["content"] 
+    
+    if execution_error != "error":
+        write_headers_bool = os.path.exists('data.csv')
 
-    with open('data.csv', 'a') as f_object:
-        field_names = ['id', 'name', 'description', 'date', 'path', 'conf_fuzzing', 'conf_compilator', 'web_scrapper', 'dirs_errors', 'findings', 'invalid_inputs']
-        dict_writer = csv.DictWriter(f_object, fieldnames=field_names)
-        if not write_headers_bool:
-            dict_writer.writeheader()
-        
-        dict_writer.writerow(analisys_data)
-        f_object.close()
+        with open('data.csv', 'a') as f_object:
+            field_names = ['id', 'name', 'description', 'date', 'path', 'conf_fuzzing', 'conf_compilator', 'web_scrapper', 'dirs_errors', 'findings', 'invalid_inputs']
+            dict_writer = csv.DictWriter(f_object, fieldnames=field_names)
+            if not write_headers_bool:
+                dict_writer.writeheader()
+            
+            dict_writer.writerow(analisys_data)
+            f_object.close()
 
     del analisys_data['invalid_inputs']
+    
     json_to_file(analisys_data)
 
 

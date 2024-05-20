@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const controller = {};
 const path = require('path');
-const { exec, execSync } = require("child_process");
+const { exec, execSync, spawn } = require("child_process");
 const filePathProfiles = path.resolve(__dirname, "../profiles.json");
 
 controller.getProfiles = async function (req, res, next) {
@@ -34,17 +34,42 @@ controller.getProfiles = async function (req, res, next) {
 
 controller.executionProfile = async function (req, res, next) {
   try {
-    var profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
-    profilesData = JSON.parse(profiles);
+    var exitByTimeOut = 0;
+    const TIMEOUT = 3600000;
 
-    executeProfile = profilesData.find(element => element.name === req.params.name)
+    const profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
+    const profilesData = JSON.parse(profiles);
 
-    execSync(`bash webapp.sh "${executeProfile.data_source}" "${executeProfile.path_simulator}" "${executeProfile.config_compilator}" "${executeProfile.config_fuzzing}" "${executeProfile.errors_directory}" "${executeProfile.description}" "${executeProfile.name}"`, async (err, stdout, stderr) => {
-      if (err) console.error(err)
+    const executeProfile = profilesData.find(element => element.name === req.params.name);
+    
+    const child = spawn("bash", ["webapp.sh",
+                                  `${executeProfile.data_source}`,
+                                  `${executeProfile.path_simulator}`,
+                                  `${executeProfile.config_compilator}`,
+                                  `${executeProfile.config_fuzzing}`,
+                                  `${executeProfile.errors_directory}`,
+                                  `${executeProfile.description}`,
+                                  `${executeProfile.name}`]);
+
+    const timeoutId = setTimeout(() => {
+      child.kill('SIGKILL');
+      exitByTimeOut = 1;
+    }, TIMEOUT);
+
+    child.on('error', (error) => {
+      clearTimeout(timeoutId);
     });
-    res.redirect("/analysis");
+    
+    child.on('close', (code, signal) => {
+      clearTimeout(timeoutId);
+
+      const dataModifier = spawn("python3", ['script/data_modifier.py', `${executeProfile.data_source}`, `${executeProfile.path_simulator}`, `${executeProfile.config_compilator}`, `${executeProfile.config_fuzzing}`, `${executeProfile.errors_directory}`, `${executeProfile.description}`, `${executeProfile.name}`, (code === 0 || timeoutId === 1) ? 'success' : 'error'])
+      
+      res.redirect("/analysis");
+    });
   } catch (err) {
-    console.log(err)
+    console.error(err);
+    // Handle error appropriately (e.g., send error response to client)
   }
 };
 
@@ -100,11 +125,7 @@ controller.deleteProfile = async function (req, res, next) {
     var removedArray = profilesData.filter((obj) => obj.name !== req.params.name);
     removedArray = JSON.stringify(removedArray)
 
-    try {
-      fs.writeFile(filePathProfiles, removedArray, 'utf-8')
-    } catch (err) {
-      console.error(err);
-    }
+    fs.writeFile(filePathProfiles, removedArray, 'utf-8')
 
     res.redirect("/profile");
   } catch (error) {
