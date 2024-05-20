@@ -5,31 +5,38 @@ const { exec, execSync, spawn } = require("child_process");
 const filePathProfiles = path.resolve(__dirname, "../profiles.json");
 
 controller.getProfiles = async function (req, res, next) {
-  var profilesData = []
-
   try {
+    var profilesData = []
+
     var profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
     profilesData = JSON.parse(profiles);
-  } catch (error) {
 
+    if (req.params.page === undefined) {
+      actualPage = 1;
+      initialData = 0;
+      lastData = 10;
+    } else if (req.params.page === 1) {
+      actualPage = 1;
+      initialData = 0;
+      lastData = 10;
+      res.redirect("/");
+    } else {
+      actualPage = req.params.page;
+      initialData = 10 * (req.params.page - 1);
+      lastData = 10 * req.params.page;
+    }
+
+    res.render("execute.ejs", { totalProfiles: profilesData, profiles: profilesData.slice(initialData, lastData), actualPage: actualPage, initialData: initialData, lastData: lastData, analysis: undefined });
+  } catch (err) {
+    if (err.message.includes('parse')) {
+      res.status(400).send('Error: Invalid analysis data format in file');
+    } else {
+      const err = new Error();
+      err.message = 'Internal Server Error';
+      err.status = 500
+      next(err); // Pass the custom error object to the global handler
+    }
   }
-
-  if (req.params.page === undefined) {
-    actualPage = 1;
-    initialData = 0;
-    lastData = 10;
-  } else if (req.params.page === 1) {
-    actualPage = 1;
-    initialData = 0;
-    lastData = 10;
-    res.redirect("/");
-  } else {
-    actualPage = req.params.page;
-    initialData = 10 * (req.params.page - 1);
-    lastData = 10 * req.params.page;
-  }
-
-  res.render("execute.ejs", { totalProfiles: profilesData, profiles: profilesData.slice(initialData, lastData), actualPage: actualPage, initialData: initialData, lastData: lastData, analysis: undefined });
 };
 
 controller.executionProfile = async function (req, res, next) {
@@ -41,15 +48,15 @@ controller.executionProfile = async function (req, res, next) {
     const profilesData = JSON.parse(profiles);
 
     const executeProfile = profilesData.find(element => element.name === req.params.name);
-    
+
     const child = spawn("bash", ["webapp.sh",
-                                  `${executeProfile.data_source}`,
-                                  `${executeProfile.path_simulator}`,
-                                  `${executeProfile.config_compilator}`,
-                                  `${executeProfile.config_fuzzing}`,
-                                  `${executeProfile.errors_directory}`,
-                                  `${executeProfile.description}`,
-                                  `${executeProfile.name}`]);
+      `${executeProfile.data_source}`,
+      `${executeProfile.path_simulator}`,
+      `${executeProfile.config_compilator}`,
+      `${executeProfile.config_fuzzing}`,
+      `${executeProfile.errors_directory}`,
+      `${executeProfile.description}`,
+      `${executeProfile.name}`]);
 
     const timeoutId = setTimeout(() => {
       child.kill('SIGKILL');
@@ -59,17 +66,23 @@ controller.executionProfile = async function (req, res, next) {
     child.on('error', (error) => {
       clearTimeout(timeoutId);
     });
-    
+
     child.on('close', (code, signal) => {
       clearTimeout(timeoutId);
 
-      const dataModifier = spawn("python3", ['script/data_modifier.py', `${executeProfile.data_source}`, `${executeProfile.path_simulator}`, `${executeProfile.config_compilator}`, `${executeProfile.config_fuzzing}`, `${executeProfile.errors_directory}`, `${executeProfile.description}`, `${executeProfile.name}`, (code === 0 || timeoutId === 1) ? 'success' : 'error'])
-      
+      const dataModifier = spawn("python3", ['script/data_modifier.py', `${executeProfile.data_source}`, `${executeProfile.path_simulator}`, `${executeProfile.config_compilator}`, `${executeProfile.config_fuzzing}`, `${executeProfile.errors_directory}`, `${executeProfile.description}`, `${executeProfile.name}`, (code === 0 || exitByTimeOut === 1) ? 'success' : 'error'])
+
       res.redirect("/analysis");
     });
   } catch (err) {
-    console.error(err);
-    // Handle error appropriately (e.g., send error response to client)
+    if (err.message.includes('parse')) {
+      res.status(400).send('Error: Invalid analysis data format in file');
+    } else {
+      const err = new Error();
+      err.message = 'Internal Server Error';
+      err.status = 500
+      next(err); // Pass the custom error object to the global handler
+    }
   }
 };
 
@@ -111,10 +124,16 @@ controller.saveProfile = async function (req, res, next) {
 
     res.redirect("/profile")
 
-  } catch (error) {
-    res.send("Se ha producido un error " + error);
+  } catch (err) {
+    if (err.message.includes('parse')) {
+      res.status(400).send('Error: Invalid analysis data format in file');
+    } else {
+      const err = new Error();
+      err.message = 'Internal Server Error';
+      err.status = 500
+      next(err); // Pass the custom error object to the global handler
+    }
   }
-
 };
 
 controller.deleteProfile = async function (req, res, next) {
@@ -128,8 +147,15 @@ controller.deleteProfile = async function (req, res, next) {
     fs.writeFile(filePathProfiles, removedArray, 'utf-8')
 
     res.redirect("/profile");
-  } catch (error) {
-    res.send("Se ha producido un error. " + error);
+  } catch (err) {
+    if (err.message.includes('parse')) {
+      res.status(400).send('Error: Invalid analysis data format in file');
+    } else {
+      const err = new Error();
+      err.message = 'Internal Server Error';
+      err.status = 500
+      next(err); // Pass the custom error object to the global handler
+    }
   }
 };
 
