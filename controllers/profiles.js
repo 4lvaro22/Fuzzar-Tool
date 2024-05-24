@@ -2,7 +2,8 @@ const fs = require('fs').promises;
 const controller = {};
 const path = require('path');
 const { exec, execSync, spawn } = require("child_process");
-const filePathProfiles = path.resolve(__dirname, "../profiles.json");
+const filePathProfiles = path.resolve(__dirname, "../database/profiles.json");
+const filePathDefaultProfiles = path.resolve(__dirname, "../database/default_profiles.json");
 
 controller.getProfiles = async function (req, res, next) {
   try {
@@ -70,7 +71,7 @@ controller.executionProfile = async function (req, res, next) {
     child.on('close', (code, signal) => {
       clearTimeout(timeoutId);
 
-      const dataModifier = spawn("python3", ['script/data_modifier.py', `${executeProfile.data_source}`, `${executeProfile.path_simulator}`, `${executeProfile.config_compilator}`, `${executeProfile.config_fuzzing}`, `${executeProfile.errors_directory}`, `${executeProfile.description}`, `${executeProfile.name}`, (code === 0 || exitByTimeOut === 1) ? 'success' : 'error'])
+      const dataModifier = spawn("python3", ['script/data_modifier.py', `${executeProfile.data_source}`, `${executeProfile.path_simulator}`, `${executeProfile.config_compilator}`, `${executeProfile.config_fuzzing}`, `${executeProfile.errors_directory}`, `${executeProfile.description}`, `${executeProfile.name}`, (code === 0 || exitByTimeOut === 1) ? 'Success' : 'Error'])
 
       res.redirect("/analysis");
     });
@@ -87,7 +88,37 @@ controller.executionProfile = async function (req, res, next) {
 };
 
 controller.newProfile = async function (req, res, next) {
-  res.render("create.ejs", { analysis: undefined });
+  try{
+    var defaultsProfiles = await fs.readFile(filePathDefaultProfiles, { encoding: 'utf-8' });
+    defaultProfilesData = JSON.parse(defaultsProfiles);
+
+    var selectedProfile = undefined;
+
+    console.log(req.params.defName)
+
+    if(req.params.defName !== undefined){
+      selectedProfile = defaultProfilesData.find(element => element.name === req.params.defName);
+      
+      if(selectedProfile === undefined){
+        err.message = 'Bad Request';
+        err.status = 400
+        next(err);
+      }
+    }
+    
+    res.render("create.ejs", { analysis: undefined , defaultsProfiles: defaultProfilesData, selectedProfile: selectedProfile });
+
+  } catch (err) {
+    if (err.message.includes('parse')) {
+      res.status(400).send('Error: Invalid analysis data format in file');
+    } else {
+      const err = new Error();
+      err.message = 'Internal Server Error';
+      err.status = 500
+      next(err); // Pass the custom error object to the global handler
+    }
+  }
+
 };
 
 controller.saveProfile = async function (req, res, next) {

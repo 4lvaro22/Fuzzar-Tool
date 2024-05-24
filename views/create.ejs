@@ -24,8 +24,16 @@
   <body class="">
     <%- include('./layout/header.ejs') %>
     <main class="relative">
+      <%- include('./components/defaultsProfilesSelector.ejs') %>
       <%- include('./components/formCreateProfile.ejs') %>
     </main>
     <%- include('./layout/footer.ejs') %>
   </body>
+  <script>
+    function countryHandler(value) {
+      console.log("a")
+      window.location = `${value}`;
+    }
+  </script>
 </html>
+

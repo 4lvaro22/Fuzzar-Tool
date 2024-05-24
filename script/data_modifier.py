@@ -39,7 +39,7 @@ def findings(dir_path):
     }
 
 def json_to_file(data_json):
-    file_name = "data.json"
+    file_name = "database/data.json"
     if os.path.exists(file_name):
         with open(file_name, "r") as file:
             try:

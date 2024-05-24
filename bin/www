@@ -26,7 +26,7 @@ const io = socketIo(server);
 
 io.on('connection', (socket) => {
   try {
-    fs.watch('data.json', (eventType, filename) => {
+    fs.watch('database/data.json', (eventType, filename) => {
       if (eventType === 'change') {
         io.emit('dataChanged');
       }

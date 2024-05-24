@@ -116,7 +116,7 @@ while getopts "hvs --" option; do
         help
         exit;;
     s)
-        echo -en "$(jq length data.json) análisis guardados.\n"
+        echo -en "$(jq length database/data.json) análisis guardados.\n"
         exit;;
     v)
         version
@@ -133,11 +133,5 @@ cat banner/logo.asc
 
 execute_web_app
 initialize_variables
-
-if [ -f "data.json" ]
-then
-   touch data.json;
-   chmod 777 data.json;
-fi
 
 main

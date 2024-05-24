@@ -1,25 +1,25 @@
 <div class="max-w-7xl mx-auto p-8 bg-cyan-950 opacity-95 rounded-md my-5 shadow-xl outline outline-1 text-white">
-  <h2 class="text-2xl font-semibold mb-6">Crear perfil fuzzer</h2>
+  <h2 class="text-2xl font-bold mb-6">Crear perfil fuzzer</h2>
   <form action="/profile/save" method="post">
 
     <div class="flex flex-row content-around">
       <div class="mb-4 columns-2xl me-2">
-        <label for="name" class="flex text-md font-bold mb-2 justify-between"
+        <label for="name" class="flex text-md font-semibold mb-2 justify-between"
           >
-          <span class="inline-block align-middle">Nombre del perfil</span> 
+          <span class="inline-block align-middle">Nombre del perfil <span class="text-red-500">(Obligatorio)</span></span> 
           <span id="info-name" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span>
         </label>
         <input
           type="text"
           id="name"
           name="name"
-          placeholder="OBD-II Fuzzing with AFL"
+          value="<%=selectedProfile !== undefined && selectedProfile.name !== undefined ? selectedProfile.name : ""%>"
           required
           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
       <div class="mb-4 columns-2xl ms-2">
-        <label for="dirErrs" class="flex text-md font-bold mb-2 justify-between"
+        <label for="dirErrs" class="flex text-md font-semibold mb-2 justify-between"
           >
           <span class="inline-block align-middle">Directorio de los errores</span> 
           <span id="info-direrrs" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
@@ -28,15 +28,14 @@
           type="text"
           id="dirErrs"
           name="dirErrs"
-          placeholder="/outputs/default/crashes"
-          required
+          value="<%=selectedProfile !== undefined && selectedProfile.errors_directory !== undefined ? selectedProfile.errors_directory : ""%>"
           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
     </div>
     <div class="flex flex-row content-around">
       <div class="mb-4 columns-7xl">
-        <label for="confComp" class="flex text-md font-bold mb-2 justify-between"
+        <label for="confComp" class="flex text-md font-semibold mb-2 justify-between"
           >
             <span class="inline-block align-middle">Configuración de la herramienta de compilaje</span> 
             <span>
@@ -48,16 +47,15 @@
           type="text"
           id="confComp"
           name="confComp"
-          placeholder="mkdir build; cd build; cmake -DCMAKE_C_COMPILER=afl-cc -DCMAKE_CXX_COMPILER=afl-c++ .."
-          required
+          value="<%=selectedProfile !== undefined && selectedProfile.config_compilator !== undefined ? selectedProfile.config_compilator : ""%>"
           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
     </div>
     <div class="flex flex-row content-around">
       <div class="mb-4 columns-2xl me-2">
-        <label for="pathSim" class="flex text-md font-bold mb-2 justify-between"
-          ><span class="inline-block align-middle">Directorio raíz del simulador o fichero</span> 
+        <label for="pathSim" class="flex text-md font-semibold mb-2 justify-between"
+          ><span class="inline-block align-middle">Directorio raíz del simulador o fichero <span class="text-red-500">(Obligatorio)</span></span> 
           <span id="info-pathsim" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
         ></label
         >
@@ -65,14 +63,14 @@
           type="text"
           id="pathSim"
           name="pathSim"
-          placeholder="/home/alvaro/TFG/obdgpslogger"
+          value="<%=selectedProfile !== undefined && selectedProfile.path_simulator !== undefined ? selectedProfile.path_simulator : ""%>"
           required
           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
       <div class="mb-4 columns-2xl ms-2">
-        <label for="confFuzz" class="flex text-md font-bold mb-2 justify-between"
-          ><span class="inline-block align-middle">Configuración del fuzzing</span> 
+        <label for="confFuzz" class="flex text-md font-semibold mb-2 justify-between"
+          ><span class="inline-block align-middle">Configuración del fuzzing <span class="text-red-500">(Obligatorio)</span></span> 
           <span id="info-conffuzz" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
         ></label
         >
@@ -80,14 +78,14 @@
           type="text"
           id="confFuzz"
           name="confFuzz"
-          placeholder="afl-fuzz -i inputs -o results/outputs/ -- obdsim -t /dev/stdin"
+          value="<%=selectedProfile !== undefined && selectedProfile.config_fuzzing !== undefined ? selectedProfile.config_fuzzing : ""%>"
           required
           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>
     </div>
     <div class="mb-4">
-      <label for="data" class="flex text-md font-bold mb-2 justify-between"
+      <label for="data" class="flex text-md font-semibold mb-2 justify-between"
         ><span class="inline-block align-middle">Fuente de datos predeterminada</span> 
         <span id="info-sourcedata" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
       ></label
@@ -100,7 +98,7 @@
       <label for="no">No predeterminado</label>
     </div>
     <div class="mb-6">
-      <label for="description" class="flex text-md font-bold mb-2 justify-between"
+      <label for="description" class="flex text-md font-semibold mb-2 justify-between"
         ><span class="inline-block align-middle">Descripción de la prueba</span> 
         <span id="info-descrip" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
       ></label
@@ -110,7 +108,7 @@
         name="description"
         rows="4"
         class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
-      ></textarea>
+      ><%=selectedProfile !== undefined && selectedProfile.description !== undefined ? selectedProfile.description : "" %></textarea>
     </div>
     <button
       type="submit"

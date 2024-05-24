@@ -36,7 +36,6 @@ compiling_simulator() {
 }
 
 executing_fuzzing(){
-    echo "$1"
     eval "$(echo "$1")" > /dev/null 2>&1
     chmod -R 777 "$2"
 }

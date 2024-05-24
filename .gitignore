@@ -37,3 +37,4 @@ results/
 inputs/
 !package.json
 *.csv
+!default_profiles.json

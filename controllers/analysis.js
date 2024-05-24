@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const controller = {};
 const path = require('path');
-const filePathTestDone = path.resolve(__dirname, "../data.json");
+const filePathTestDone = path.resolve(__dirname, "../database/data.json");
 
 controller.getAnalysis = async function (req, res, next) {
   try {

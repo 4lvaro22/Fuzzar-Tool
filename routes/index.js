@@ -14,6 +14,7 @@ router.get("/analysis/delete/:id", analysisController.deleteAnalysis);
 router.get("/profile", profileController.getProfiles);
 router.post("/profile/execute/:name", profileController.executionProfile);
 router.get("/profile/new", profileController.newProfile);
+router.get("/profile/new/:defName", profileController.newProfile);
 router.post("/profile/save", profileController.saveProfile);
 router.get("/profile/delete/:name", profileController.deleteProfile);
 

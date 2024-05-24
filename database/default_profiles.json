@@ -1,0 +1,46 @@
+[
+    {
+        "name": "AFLPlusPlus with CMake system build",
+        "errors_directory": "/outputs/default/crashes",
+        "config_compilator": "mkdir build; cd build; cmake -DCMAKE_C_COMPILERC=afl-gcc -DCMAKE_CXX_COMPILER=afl-g++ ..",
+        "path_simulator": "<directorio_simulador_fichero>",
+        "config_fuzzing": "afl-fuzz -i inputs -o outputs -V 3600 -- <app_ejecutable>",
+        "data_source": "No predeterminado",
+        "description": "Default profile for AFLPlusPlus Fuzzing with CMake system build"
+      },
+      {
+        "name": "AFLPlusPlus with Meson system build",
+        "errors_directory": "/outputs/default/crashes",
+        "config_compilator": "mkdir build; cd build; cmake -DCMAKE_C_COMPILERC=afl-gcc -DCMAKE_CXX_COMPILER=afl-g++ ..",
+        "path_simulator": "<directorio_simulador_fichero>",
+        "config_fuzzing": "afl-fuzz -i inputs -o outputs -V 3600 -- <app_ejecutable>",
+        "data_source": "No predeterminado",
+        "description": "Default profile for AFLPlusPlus Fuzzing with Meson system build"
+      },
+      {
+        "name": "AFLPlusPlus with configure system build",
+        "errors_directory": "/outputs/default/crashes",
+        "config_compilator": "CC=afl-gcc CXX=afl-gcc ./configure --disable-shared",
+        "path_simulator": "<directorio_simulador_fichero>",
+        "config_fuzzing": "afl-fuzz -i inputs -o outputs -V 3600 -- <app_ejecutable>",
+        "data_source": "No predeterminado",
+        "description": "Default profile for AFLPlusPlus Fuzzing with configure system build"
+      },
+      {
+        "name": "Honggfuzz",
+        "errors_directory": "/outputs",
+        "config_compilator": "",
+        "path_simulator": "<directorio_simulador_fichero>",
+        "config_fuzzing": "honggfuzz -i inputs --output outputs -- <app_ejecutable>",
+        "data_source": "No predeterminado",
+        "description": "Default profile for Honggfuzz Fuzzing"
+      },
+      {
+        "name": "Clang Libfuzzer",
+        "config_compilator": "clang -fsanitize=address,fuzzer <directorio_del_fichero> -o <directorio_del_ejecutable>",
+        "path_simulator": "<directorio_simulador_fichero>",
+        "config_fuzzing": "<directorio_del_ejecutable>",
+        "data_source": "No predeterminado",
+        "description": "Default profile for Clang and LibFuzzer Fuzzing"
+      }
+]

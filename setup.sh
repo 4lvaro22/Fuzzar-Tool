@@ -73,6 +73,7 @@ install_libfuzzer() {
 }
 
 sudo apt-get update
+sudo apt install python3-pip
 
 if [ $# -eq 0 ]; then
     echo "No arguments provided. Please specify which fuzzers to install."
@@ -102,3 +103,15 @@ for arg in "$@"; do
             ;;
     esac
 done
+
+if [ -f "database/data.json" ]
+then
+   touch database/data.json;
+   chmod 777 database/data.json;
+fi
+
+if [ -f "database/profiles.json" ]
+then
+   touch database/profiles.json;
+   chmod 777 database/profiles.json;
+fi
