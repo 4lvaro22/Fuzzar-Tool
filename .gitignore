@@ -31,7 +31,10 @@ npm-debug.log
 
 .DS_Store
 
-output/*
+outputs/
 *.json
 results/
-inputs/*
+inputs/
+!package.json
+*.csv
+!default_profiles.json

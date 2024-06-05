@@ -1,0 +1,14 @@
+<div class="bg-pink-950 opacity-85 px-4 py-4 space-x-5 lg:flex lg:flex-row max-lg:space-y-3 text-center mx-auto justify-center">
+    <label class="text-white font-bold align-middle text-xl my-auto">Seleccionar un contructor de perfil</label> 
+    <select name="cars" id="cars" class="py-2 px-3 pe-9 align-middle my-auto border-gray-200 rounded-lg text-base focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" onchange="countryHandler(this.value)">
+      <option <%= selectedProfile === undefined ? "selected" : "" %> value="/profile/new">No seleccionado</option></a>
+      <%
+        defaultProfilesData.forEach(element => {
+      %>
+        <option <%= selectedProfile !== undefined && element.name === selectedProfile.name ? "selected" : "" %> value="/profile/new/<%=element.name%>"><%=element.name%></option>
+      <%
+        });
+      %>
+        
+    </select>
+</div>

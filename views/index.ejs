@@ -5,12 +5,132 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="./javascripts/loadNewData.js"></script>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @keyframes rotate-color {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @-webkit-keyframes rotate-color {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+        to {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+      .animate-gradient {
+        animation: rotate-color 5s linear infinite;
+        -webkit-animation: rotate-color 5s linear infinite;
+      }
+    </style>
   </head>
   <body class="">
     <%- include('./layout/header.ejs') %>
-    <main class="relative">
-      <%- include('./components/alert.ejs') %> <%-
-      include('./components/table.ejs') %>
+    <main class="relative mx-20">
+      <div class="">
+        <div class="flex flex-row justify-center my-14">
+          <h1
+            class="text-4xl font-bold text-center mx-5 my-10 text-pretty p-3 w-3/12"
+            style="font-family: Poppins, 'Courier New', Courier, monospace"
+          >
+            Testea tus aplicaciones mediantes técnicas fuzzing.
+          </h1>
+          <img
+            src="/images/landing_logo.png"
+            class="h-72"
+            alt=""
+            class="mt-28"
+          />
+        </div>
+
+        <div class="flex flex-row justify-center gap-7 my-14">
+          <div
+            class="flex flex-col basis-3/12 gap-y-10 relative bg-cyan-950 opacity-85 text-white px-8 py-10 rounded-2xl"
+          >
+            <header class="text-center">
+              <h2 class="text-2xl font-semibold">Ver análisis realizados</h2>
+            </header>
+            <main>
+              <p class="text-center text-lg">
+                Mantén un seguimiento de los análisis realizados en tus
+                aplicaciones. Los datos se mostrarán en una tabla con la
+                información más relevante.
+              </p>
+            </main>
+            <footer class="container-fluid mt-auto justify-center mx-auto">
+              <a href="/analysis"
+                ><button
+                  class="mx-auto justify-center my-2 text-dark font-semibold py-2 px-8 text-xl bg-cyan-500 hover:bg-cyan-400 text-white border-b-4 border-cyan-700 hover:border-cyan-500 rounded"
+                >
+                  Ver Análisis
+                </button></a
+              >
+            </footer>
+          </div>
+
+          <div
+            class="flex flex-col basis-3/12 gap-y-10 relative bg-pink-950 opacity-85 px-8 py-10 rounded-2xl"
+          >
+            <header class="text-center">
+              <h2 class="text-2xl font-semibold text-white">
+                Crear perfil fuzzing
+              </h2>
+            </header>
+            <main>
+              <p class="text-center text-lg text-white">
+                Esta funcionalidad está orientada a profesionales de la materia.
+                Utilice esta característica si desea crear un nuevo perfil
+                fuzzing para su posterior ejecución u orientado a personas no
+                expertas.
+              </p>
+            </main>
+            <footer class="container-fluid mt-auto justify-center mx-auto">
+              <a href="/profile/new"
+                ><button
+                  class="mx-auto justify-center my-2 text-dark font-semibold py-2 px-8 text-xl bg-pink-500 hover:bg-pink-400 text-white border-b-4 border-pink-700 hover:border-pink-500 rounded"
+                >
+                  Crear Perfil
+                </button></a
+              >
+            </footer>
+          </div>
+
+          <div
+            class="card flex flex-col basis-3/12 gap-y-10 relative bg-cyan-950 opacity-85 text-white px-8 py-10 rounded-2xl"
+          >
+            <header class="text-center">
+              <h2 class="text-2xl font-semibold">Ejecutar análisis fuzzing</h2>
+            </header>
+            <main>
+              <p class="text-center text-lg text-pretty">
+                Aquí podrá realizar los análisis que desee mediante la previa
+                generación de perfiles. <br>
+                No dudes en probar tus aplicaciones!
+              </p>
+            </main>
+            <footer class="container-fluid mt-auto justify-center mx-auto">
+              <a href="/profile"
+                ><button
+                  class="mx-auto justify-center my-2 text-dark font-semibold py-2 px-8 text-xl bg-cyan-500 hover:bg-cyan-400 text-white border-b-4 border-cyan-700 hover:border-cyan-500 rounded"
+                >
+                  Ejecutar Análisis
+                </button></a
+              >
+            </footer>
+          </div>
+        </div>
+      </div>
     </main>
     <%- include('./layout/footer.ejs') %>
   </body>

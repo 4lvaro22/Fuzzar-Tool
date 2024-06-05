@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="./javascripts/loadNewData.js"></script>
+  </head>
+  <body class="">
+    <%- include('./layout/header.ejs') %>
+    <main class="relative"><%{{ content }}%></main>
+    <%- include('./layout/footer.ejs') %>
+  </body>
+</html>

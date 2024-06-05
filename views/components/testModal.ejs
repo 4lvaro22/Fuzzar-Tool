@@ -1,0 +1,43 @@
+<dialog
+  class="w-3/6 h-fit top-1/6 p-5 transition bg-white rounded-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm"
+  id="test-modal"
+>
+  <header>
+    <h3 id="modal-title" class="font-bold text-lg my-1">
+      Realizar prueba fuzzing
+    </h3>
+    <hr style="background-color: black !important; height: 1px; border: none" />
+  </header>
+  <main class="my-4">
+    <label id="modal-description" class="text-pretty my-1"
+      >Seleccionar prueba:
+    </label>
+    <select onchange="selectProfile()" id="s"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 inline-block p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    >
+      <option
+        value="-"
+        label="Ningún perfil seleccionado"
+        selected="selected"
+      ></option>
+      <% profiles.forEach(element => { %>
+      <option id="<%=element.name%>" value="<%=element.name%>" label="<%=element.name%>"></option>
+      <% }); %>
+    </select>
+
+    <div id="profile-data" class="bg-gray-400 h-3/6 my-3 p-3">
+        <p>Ejecución del fuzzer: <span id="fuzzer"></span></p>
+        <p>Ejecución del simulador: <span id="ex-sim"></span></p>
+        <p>Directorio raíz del simulador: <span id="dir-sim"></span></p>
+    </div>
+  </main>
+
+  <form method="dialog">
+    <button
+      type="submit"
+      class="mx-auto justify-center my-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+    >
+      Close
+    </button>
+  </form>
+</dialog>

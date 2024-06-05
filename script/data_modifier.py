@@ -3,6 +3,9 @@ import sys
 import os
 import re
 import uuid
+import datetime
+import csv
+import base64
 
 def get_sanitizer(file_path):
     with open(file_path) as file:
@@ -15,26 +18,28 @@ def get_sanitizer(file_path):
 
     return sanitizer
 
-def read_fuzzer_stats(file_path):
-    
-    with open(file_path, "r") as file:
-        lines = file.readlines()
-    
-    data = {}
+def findings(dir_path):
+    findings = 0
 
-    for line in lines:
-        key, value = line.strip().split(':')
-        key = key.strip()
-        value = value.strip()
+    content = []
+    for file in os.listdir(dir_path):
+        pipe = os.popen(f'file -b {dir_path}/{file}')
+        data_type = pipe.read().strip()
+        
+        if data_type == 'data':
+            with open(dir_path + '/' + file, 'rb') as f:
+                content.append(f.read())
+                f.close()
+            
+            findings += 1
 
-        data[key] = value
-    
-    fuzzer_stats: dict = json.loads(json.dumps(data, indent=4))
-    
-    return fuzzer_stats
+    return {
+        "findings": findings,
+        "content": content
+    }
 
 def json_to_file(data_json):
-    file_name = "data.json"
+    file_name = "database/data.json"
     if os.path.exists(file_name):
         with open(file_name, "r") as file:
             try:
@@ -42,7 +47,6 @@ def json_to_file(data_json):
             except json.JSONDecodeError:
                 data = []
         data.append(data_json)
-        data = sorted(data, key=lambda d: d['start_time'], reverse=True)
         with open(file_name, "w") as file:
             json.dump(data, file)
     else:
@@ -50,18 +54,48 @@ def json_to_file(data_json):
             data_json = [data_json]
             json.dump(data_json, file)
 
-path = sys.argv[1]
-fuzzer: str = sys.argv[2]
-execution_time = sys.argv[3]
-last_folder = sys.argv[4]
+if __name__ == "__main__":
 
-analisys_data: dict = read_fuzzer_stats(path + '/results/result-'+ last_folder + '/default/fuzzer_stats')
-analisys_data["tool"] = fuzzer
-analisys_data["sanitizer"] = get_sanitizer(path + '/results/result-'+ last_folder + '/default/fuzzer_setup')
-analisys_data["time"] = execution_time
-analisys_data["id"] = str(uuid.uuid4())
-analisys_data["initial_time"] = last_folder
+    data_source = sys.argv[1]
+    path = sys.argv[2]
+    conf_comp = sys.argv[3]
+    conf_fuzz = sys.argv[4]
+    dirs_errs = sys.argv[5]
+    description = sys.argv[6]
+    name = sys.argv[7]
+    execution_error = sys.argv[8]
 
-json_to_file(analisys_data)
+    analisys_data: dict = {}
+
+    analisys_data["path"] = path
+    analisys_data["name"] = name
+    analisys_data["conf_fuzzing"] = conf_fuzz
+    analisys_data["conf_compilator"] = conf_comp
+    analisys_data["web_scrapper"] = data_source
+    analisys_data["description"] = description
+    analisys_data["dirs_errors"] = dirs_errs
+    analisys_data["id"] = str(uuid.uuid4())
+    analisys_data["date"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+
+    findings = findings(dirs_errs) if execution_error != "error" else  {"findings": 'error', "content": None}
+
+    analisys_data["findings"] = findings["findings"]
+    analisys_data["invalid_inputs"] = findings["content"] 
+    
+    if execution_error != "error":
+        write_headers_bool = os.path.exists('data.csv')
+
+        with open('data.csv', 'a') as f_object:
+            field_names = ['id', 'name', 'description', 'date', 'path', 'conf_fuzzing', 'conf_compilator', 'web_scrapper', 'dirs_errors', 'findings', 'invalid_inputs']
+            dict_writer = csv.DictWriter(f_object, fieldnames=field_names)
+            if not write_headers_bool:
+                dict_writer.writeheader()
+            
+            dict_writer.writerow(analisys_data)
+            f_object.close()
+
+    del analisys_data['invalid_inputs']
+    
+    json_to_file(analisys_data)
 
 

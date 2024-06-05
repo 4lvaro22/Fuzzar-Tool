@@ -1,44 +1,40 @@
-<% backgroundFailed="bg-red-200 border-red-400" %>
-<% backgroundNoVuln="bg-green-200 border-green-400" %>
-<% backgroundRunning="bg-purple-200 border-purple-400" %>
-<% backgroundVuln="bg-orange-200 border-orange-400" %>
+<% backgroundFailed="bg-red-100 border-red-200" %>
+<% backgroundSuccess="bg-green-100 border-green-200" %>
+<% backgroundRunning="bg-purple-100 border-purple-200" %>
 
 <div class="container min-w-full">
     <div class="flex flex-row justify-center my-4">
-        <h2 class="text-2xl px-5 font-bold">Análisis realizados</h2>
+      <h2 class="text-2xl px-5 font-bold">Perfiles creados</h2>
     </div>
     <div>
       <table class="w-full text-center">
         <thead class="border-b border-t">
           <tr>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Id
+                Nombre
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Fecha
+                Ruta del simulador
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Perfil fuzzer
+                Casos de prueba predeterminados
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Descripción
+                Descripción
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Hallazgos
+                Borrar perfil
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Estado
-            </th>
-            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
-              Borrar Análisis
+                Ejecutar prueba
             </th>
           </tr>
         </thead>
         <tbody>
-          <% if (analysis.length > 0) { %>
-          <% analysis.forEach(function (element, i) { %>
+          <% if (profiles.length > 0) { %>
+          <% profiles.forEach(function (element, i) { %>
           <dialog class="w-3/6 h-fit top-1/6 p-5 transition bg-white rounded-xl backdrop:bg-black/50 backdrop:backdrop-blur-sm" id="<%=element.name%> description">
-            <form method="dialog" >
+            <form method="dialog">
                 <h3 id="modal-title" class="font-bold text-lg my-1"><%=element.name%></h3>
                 <hr style="background-color: black !important; height: 1px; border: none;">
                 <p id="modal-description" class="text-pretty my-1"><%=element.description%></p>
@@ -49,65 +45,58 @@
             <td
               class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
-              <%=element.id%>
-            </td>
-            <td
-              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
-            >
-              <%=element.date%>
-            </td>
-            <td
-              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
-            >
               <%=element.name%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
+              <%=element.path_simulator%>
+            </td>
+            <td
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
+            >
+              <%=element.data_source%>
+            </td>
+            <td class="text-sm text-black font-medium px-6 py-2 break-words">
               <button id="<%=element.name%> description" class="profile-description underline text-blue-600">Ver descripción</button>
             </td>
             <td
-              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
+            class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
-              <%=element.findings%>
-            </td>
-            <td
-              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap <%= element.findings === 'Error' ? backgroundFailed : (element.findings <= 0 ? backgroundNoVuln : backgroundVuln) %>"
-            >
-              <%=element.findings == 0 ? "No vulnerable" : (element.findings == 'error' ? 'Fallida' : 'Vulnerable')%>
+              <a href="/profile/delete/<%=element.name%>"><button class="mx-auto justify-center my-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Borrar</button></a>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
-              <a href="/analysis/delete/<%=element.id%>"><button class="mx-auto justify-center my-2 bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">Borrar</button></a>
+              <form method="post" action="/profile/execute/<%=element.name%>" class="ejecutar-form"><button class="mx-auto justify-center my-2 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded" type="submit">Ejecutar</button></form>
             </td>
           </tr>
           <% }); %>
           <% } else { %>
             <tr>
-              <td colspan="9"><h3 class="text-lg font-semibold text-center my-10">AVISO: No se han encontrado análisis realizados. <br>Por favor, use la herramienta facilitada por terminal.</h3></td>
+              <td colspan="9"><h3 class="text-lg font-semibold text-center my-10">AVISO: No se han encontrado perfiles creados.</h3></td>
             </tr>
           <% } %>
         </tbody>
       </table>
-      <% if (analysis.length > 0) { %>
+      <% if (profiles.length > 0) { %>
       <nav class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4 mx-5">
-        <span class="text-sm font-normal text-black dark:text-black mb-4 md:mb-0 block w-full md:inline md:w-auto">Enseñando<span class="font-semibold text-black"> - <%=initialData + 1 %></span> al <span class="font-semibold text-black"><%=initialData + analysis.length%></span></span>
+        <span class="text-sm font-normal text-black dark:text-black mb-4 md:mb-0 block w-full md:inline md:w-auto">Enseñando<span class="font-semibold text-black"> - <%=initialData + 1 %></span> al <span class="font-semibold text-black"><%=initialData + profiles.length%></span></span>
         <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
           <% if (actualPage != 1){%>
             <li>
-                <a href="/analysis/<%=Number(actualPage)-1%>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-black bg-white border rounded-s-lg">Previous</a>
+                <a href="/profile/<%=Number(actualPage)-1%>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-black bg-white border rounded-s-lg">Previous</a>
             </li>
             <% } %>
             <% page = 1 %>
-            <% _.range(0, totalAnalysis.length, 10).forEach(element => { %>
+            <% _.range(0, totalProfiles.length, 10).forEach(element => { %>
               <li>
-                <a href="/analysis/<%=page%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border"><%= page %></a>
+                <a href="/profile/<%=page%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border"><%= page %></a>
               </li>
               <% page ++; %>
             <% }); %>
             <% if (actualPage != page-1){%>
-        <a href="/analysis/<%=Number(actualPage)+1%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border rounded-e-lg">Next</a>
+        <a href="/profile/<%=Number(actualPage)+1%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border rounded-e-lg">Next</a>
             </li>
             <% } %>
         </ul>
@@ -115,4 +104,18 @@
     <% } %>
   </div>
   <script src="/javascripts/sanitizerModal.js"></script>
-  
+  <script>
+    function confirmExecution(form) {
+      if (confirm("Esta acción conlleva un intervalo de tiempo muy grande para su ejecución. ¿Estás seguro que quieres realizar la acción?")) {
+        form.submit();
+      } else {
+        event.preventDefault();
+      }
+    }
+  </script>
+  <script>
+    const executeForm = document.getElementsByClassName('ejecutar-form');
+    for (let i = 0; i < executeForm.length; i++) {
+      executeForm[i].addEventListener('submit', (event) => confirmExecution(event.target));
+    }    
+  </script>

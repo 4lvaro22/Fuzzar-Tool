@@ -1,0 +1,18 @@
+chardet==5.2.0
+charset-normalizer==3.3.2
+gyp-next==0.16.2
+idna==3.7
+packaging==24.0
+Pygments==2.17.2
+python-apt==2.7.6
+python-magic==0.4.27
+PyYAML==6.0.1
+requests==2.31.0
+sh==2.0.6
+six==1.16.0
+soupsieve==2.5
+tqdm==4.66.4
+unicorn==2.0.1.post1
+unicornafl @ file:///home/alvaro/TFG/AFLplusplus/unicorn_mode/unicornafl/bindings/python
+urllib3==2.2.1
+webencodings==0.5.1
