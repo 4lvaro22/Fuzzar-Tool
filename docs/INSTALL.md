@@ -1,6 +1,6 @@
 # Cómo instalar Fuzzar Tool
 
-Para empezar, es necesario tener instalado [Node.js](https://nodejs.org/en) en su versión 18 o superior.
+Para empezar, es necesario tener instalado [Node.js](https://nodejs.org/en) en su versión 18 o superior. Además de instalar el sistema de gestión de paquetes npm.
 
 Asumiendo que esté la herramienta Node.js instalada, se deberán instalar todas las siguientes dependencias:
 
