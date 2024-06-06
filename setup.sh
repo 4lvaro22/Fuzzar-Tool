@@ -13,71 +13,72 @@ reset_color="\e[0;39m"
 
 # Installing function AFLPlusPlus
 install_aflplusplus() {
-    echo "$blue_color[+]$grey_color Installing dependencies..."
-    echo "$green_color[✓]$grey_color Dependencies done."
+    echo -ne "$blue_color[+]$grey_color Installing dependencies..."
 
     sudo apt-get install -y build-essential python3-dev automake cmake git flex bison libglib2.0-dev libpixman-1-dev python3-setuptools cargo libgtk-3-dev
     sudo apt-get install -y lld-14 llvm-14 llvm-14-dev clang-14 || sudo apt-get install -y lld llvm llvm-dev clang
     sudo apt-get install -y gcc-$(gcc --version|head -n1|sed 's/\..*//'|sed 's/.* //')-plugin-dev libstdc++-$(gcc --version|head -n1|sed 's/\..*//'|sed 's/.* //')-dev
     sudo apt-get install -y ninja-build 
 
-    echo "$blue_color[+]$grey_color Compiling AFL++..."
+    echo -ne "$green_color[✓]$grey_color Dependencies done."
+
+    echo -ne "$blue_color[+]$grey_color Compiling AFL++..."
     TEMP_DIR=$(mktemp -d)
     cd "$TEMP_DIR"
     
     git clone https://github.com/AFLplusplus/AFLplusplus.git
     cd AFLplusplus
-    echo "$green_color[✓]$grey_color Compiling completed."
+    echo -ne "$green_color[✓]$grey_color Compiling completed."
 
-    echo "$blue_color[+]$grey_color Installing AFL++..."
+    echo -ne "$blue_color[+]$grey_color Installing AFL++..."
     make all
     sudo make install
     
     cd /
     rm -rf "$TEMP_DIR"
-    echo "$green_color[✓]$grey_color AFL++ installation completed."
+    echo -ne "$green_color[✓]$grey_color AFL++ installation completed."
 }
 
 # Installing function Honggfuzz
 install_honggfuzz() {
-    echo "$blue_color[+]$grey_color Installing dependencies..." 
-    echo "$green_color[✓]$grey_color Dependencies done."
+    echo -ne "$blue_color[+]$grey_color Installing dependencies..." 
 
     sudo apt-get install binutils-dev libunwind-dev libblocksruntime-dev clang
+    echo -ne "$green_color[✓]$grey_color Dependencies done."
 
-    echo "$blue_color[+]$grey_color Compiling Honggfuzz..."
+    echo -ne "$blue_color[+]$grey_color Compiling Honggfuzz..."
     TEMP_DIR=$(mktemp -d)
     cd "$TEMP_DIR"
     
     git clone https://github.com/google/honggfuzz.git
     cd honggfuzz
-    echo "$green_color[✓]$grey_color Compiling completed."
+    echo -ne "$green_color[✓]$grey_color Compiling completed."
     
-    echo "$blue_color[+]$grey_color Installing Honggfuzz..."
+    echo -ne "$blue_color[+]$grey_color Installing Honggfuzz..."
     make
     sudo make install
     
     cd /
     rm -rf "$TEMP_DIR"
-    echo "$green_color[✓]$grey_color Honggfuzz installation completed."
+    echo -ne "$green_color[✓]$grey_color Honggfuzz installation completed."
 }
 
 # Installing function AFLPlusPlus
 install_libfuzzer() {
 
-    echo "$blue_color[+]$grey_color Installing LibFuzzer..."
+    echo -ne "$blue_color[+]$grey_color Installing LibFuzzer..."
 
     sudo apt-get install clang-6.0
     
-    echo "$green_color[✓]$grey_color AFL++ installation completed."
+    echo -ne "$green_color[✓]$grey_color LibFuzzer installation completed."
 }
 
 sudo apt-get update
 sudo apt install python3-pip
 
 if [ $# -eq 0 ]; then
-    echo "No arguments provided. Please specify which fuzzers to install."
-    echo "Usage: $0 <fuzzers_names_or_all_to_complete_installation>"
+    echo -ne "No arguments provided. Please specify which fuzzers to install."
+    echo -ne "Usage: $0 <fuzzers_names_or_all_to_complete_installation>"
     exit 1
 fi
 
@@ -97,8 +98,8 @@ for arg in "$@"; do
             install_honggfuzz
             ;;
         *)
-            echo "Invalid option: $arg"
-            echo "Usage: $0 <fuzzers_names_or_all_to_complete_installation>"
+            echo -ne "Invalid option: $arg"
+            echo -ne "Usage: $0 <fuzzers_names_or_all_to_complete_installation>"
             exit 1
             ;;
     esac

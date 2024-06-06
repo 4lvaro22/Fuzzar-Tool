@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const controller = {};
 const path = require('path');
-const { exec, execSync, spawn } = require("child_process");
+const { exec, execSync, spawn, spawnSync } = require("child_process");
 const filePathProfiles = path.resolve(__dirname, "../database/profiles.json");
 const filePathDefaultProfiles = path.resolve(__dirname, "../database/default_profiles.json");
 
@@ -41,40 +41,43 @@ controller.getProfiles = async function (req, res, next) {
 };
 
 controller.executionProfile = async function (req, res, next) {
-  try {
-    var exitByTimeOut = 0;
-    const TIMEOUT = 3600000;
-
+  try{
+    var exitError = 0;
+    
     const profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
     const profilesData = JSON.parse(profiles);
-
+    
     const executeProfile = profilesData.find(element => element.name === req.params.name);
-
-    const child = spawn("bash", ["webapp.sh",
+    const TIMEOUT = executeProfile.time;
+    
+    const child = spawnSync("/bin/bash", ["webapp.sh",
       `${executeProfile.data_source}`,
       `${executeProfile.path_simulator}`,
       `${executeProfile.config_compilator}`,
       `${executeProfile.config_fuzzing}`,
       `${executeProfile.errors_directory}`,
       `${executeProfile.description}`,
-      `${executeProfile.name}`]);
+      `${executeProfile.name}`],
+      {
+        encoding: 'utf-8',
+        timeout: TIMEOUT
+      });
 
-    const timeoutId = setTimeout(() => {
-      child.kill('SIGKILL');
-      exitByTimeOut = 1;
-    }, TIMEOUT);
+    if (child.stderr) {
+      exitError = 1;
+    }
 
-    child.on('error', (error) => {
-      clearTimeout(timeoutId);
-    });
+    const dataModifier = spawnSync("python3", ['script/data_modifier.py', 
+      `${executeProfile.data_source}`, 
+      `${executeProfile.path_simulator}`, 
+      `${executeProfile.config_compilator}`, 
+      `${executeProfile.config_fuzzing}`, 
+      `${executeProfile.errors_directory}`, 
+      `${executeProfile.description}`, 
+      `${executeProfile.name}`, 
+    (exitError === 0) ? 'Success' : 'Error']);
 
-    child.on('close', (code, signal) => {
-      clearTimeout(timeoutId);
-
-      const dataModifier = spawn("python3", ['script/data_modifier.py', `${executeProfile.data_source}`, `${executeProfile.path_simulator}`, `${executeProfile.config_compilator}`, `${executeProfile.config_fuzzing}`, `${executeProfile.errors_directory}`, `${executeProfile.description}`, `${executeProfile.name}`, (code === 0 || exitByTimeOut === 1) ? 'Success' : 'Error'])
-
-      res.redirect("/analysis");
-    });
+    res.redirect('/analysis');
   } catch (err) {
     if (err.message.includes('parse')) {
       res.status(400).send('Error: Invalid analysis data format in file');
@@ -88,25 +91,24 @@ controller.executionProfile = async function (req, res, next) {
 };
 
 controller.newProfile = async function (req, res, next) {
-  try{
+  try {
     var defaultsProfiles = await fs.readFile(filePathDefaultProfiles, { encoding: 'utf-8' });
     defaultProfilesData = JSON.parse(defaultsProfiles);
 
     var selectedProfile = undefined;
 
-    console.log(req.params.defName)
 
-    if(req.params.defName !== undefined){
+    if (req.params.defName !== undefined) {
       selectedProfile = defaultProfilesData.find(element => element.name === req.params.defName);
-      
-      if(selectedProfile === undefined){
+
+      if (selectedProfile === undefined) {
         err.message = 'Bad Request';
         err.status = 400
         next(err);
       }
     }
-    
-    res.render("create.ejs", { analysis: undefined , defaultsProfiles: defaultProfilesData, selectedProfile: selectedProfile });
+
+    res.render("create.ejs", { analysis: undefined, defaultsProfiles: defaultProfilesData, selectedProfile: selectedProfile });
 
   } catch (err) {
     if (err.message.includes('parse')) {
@@ -139,6 +141,7 @@ controller.saveProfile = async function (req, res, next) {
     let pathSim = req.body.pathSim;
     let data = req.body.data;
     let description = req.body.description;
+    let time = req.body.time;
 
     let newProfile = {
       "name": name,
@@ -147,7 +150,8 @@ controller.saveProfile = async function (req, res, next) {
       "config_fuzzer": confFuzzer,
       "path_simulator": pathSim,
       "data_source": data,
-      "description": description
+      "description": description,
+      "time": time
     };
 
     profilesData.push(newProfile);

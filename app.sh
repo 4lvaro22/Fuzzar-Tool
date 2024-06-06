@@ -88,6 +88,9 @@ main() {
     echo -ne "\n$blue_color[+]$grey_color Esto puede durar varios minutos!"
     bash ./webapp.sh "$data_source" "$path_simulator" "$config_compilator" "$config_fuzzing" "$errors_directory" "$description" "$name"
 
+    echo "$green_color[✓]$grey_color Análisis completado correctamente!!"
+    echo -ne "$blue_color[+]$grey_color Usa la aplicación web para ver los resultados."
+
     echo -ne "\n$yellow_color[?]$grey_color Quiere realizar otra prueba fuzzing? (s/N): "
     read loop
     if  [ "$loop" == "S" ] || [ "$loop" == "s" ]; then 

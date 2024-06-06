@@ -7,7 +7,8 @@ const enumToolTip = {
     "info-pathsim": "Directorio raíz del simulador o directorio del fichero bajo pruebas (directorio absoluto).",
     "info-conffuzz": "Comandos de la configuración para la ejecución de la prueba fuzzing.",
     "info-sourcedata": "Fuente de los datos para los casos de pruebas iniciales a testear.",
-    "info-descrip": "Descipción de la prueba que realiza el perfil fuzzing, se ruega que sea lo más descriptiva posible."
+    "info-descrip": "Descipción de la prueba que realiza el perfil fuzzing, se ruega que sea lo más descriptiva posible.",
+    "info-time": "Tiempo máximo de ejecución del análisis."
 }
 
 for (const [key, value] of Object.entries(enumToolTip)) {
