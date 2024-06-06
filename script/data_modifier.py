@@ -47,6 +47,7 @@ def json_to_file(data_json):
             except json.JSONDecodeError:
                 data = []
         data.append(data_json)
+        
         with open(file_name, "w") as file:
             json.dump(data, file)
     else:
@@ -64,6 +65,7 @@ if __name__ == "__main__":
     description = sys.argv[6]
     name = sys.argv[7]
     execution_error = sys.argv[8]
+    time = sys.argv[9]
 
     analisys_data: dict = {}
 
@@ -76,13 +78,14 @@ if __name__ == "__main__":
     analisys_data["dirs_errors"] = dirs_errs
     analisys_data["id"] = str(uuid.uuid4())
     analisys_data["date"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+    analisys_data["time"]
 
     findings = findings(dirs_errs) if execution_error != "error" else  {"findings": 'error', "content": None}
 
     analisys_data["findings"] = findings["findings"]
     analisys_data["invalid_inputs"] = findings["content"] 
     
-    if execution_error != "error":
+    if execution_error != "Error":
         write_headers_bool = os.path.exists('data.csv')
 
         with open('data.csv', 'a') as f_object:

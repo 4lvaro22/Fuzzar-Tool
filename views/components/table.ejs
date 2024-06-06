@@ -74,7 +74,7 @@
             <td
               class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap <%= element.findings === 'Error' ? backgroundFailed : (element.findings <= 0 ? backgroundNoVuln : backgroundVuln) %>"
             >
-              <%=element.findings == 0 ? "No vulnerable" : (element.findings == 'error' ? 'Fallida' : 'Vulnerable')%>
+              <%=element.findings == 0 ? "No vulnerable" : (element.findings == 'Error' ? 'Fallida' : 'Vulnerable')%>
             </td>
             <td
               class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"

@@ -24,8 +24,9 @@ controller.getAnalysis = async function (req, res, next) {
       initialData = 10 * (req.params.page - 1);
       lastData = 10 * req.params.page;
     }
-
+    
     res.render("tests.ejs", { totalAnalysis: databaseData, analysis: databaseData.slice(initialData, lastData), actualPage: actualPage, initialData: initialData, lastData: lastData, profiles: undefined });
+
   } catch (err) {
     if (err.message.includes('parse')) {
       res.status(400).send('Error: Invalid analysis data format in file');

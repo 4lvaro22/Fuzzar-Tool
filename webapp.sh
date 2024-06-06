@@ -25,11 +25,12 @@ compiling_simulator() {
     if [[ -d "$1" ]] ; then
         cd "$1";
         rm -rf build
-        eval "$(echo "$2")"
+        eval "$(echo "$2")" > /dev/null 2>&1
+        make install
         cd "$actual_dir"
     elif [[ -f "$1" ]] ; then
         cd "$(dirname "$1")"
-        eval "$(echo "$2")"
+        eval "$(echo "$2")" > /dev/null 2>&1
     else
         exit -1
     fi

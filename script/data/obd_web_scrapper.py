@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-from tqdm import tqdm
 import os
 
 class ObdPidScrapper:
@@ -18,7 +17,7 @@ class ObdPidScrapper:
 
             tabla = soup.find('table')
 
-            for row in tqdm(tabla.findAll('tr')[1:(-1) if modifier == "05" or modifier == "09" else None]):
+            for row in tabla.findAll('tr')[1:(-1) if modifier == "05" or modifier == "09" else None]:
                 pid = row.findAll('td')[0].text
                 pids.append(pid.replace('\n', ''))
 
