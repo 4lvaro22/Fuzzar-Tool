@@ -50,16 +50,6 @@ controller.executionProfile = async function (req, res, next) {
     const executeProfile = profilesData.find(element => element.name === req.params.name);
     const TIMEOUT = Number(executeProfile.time) * 1000;
 
-
-    console.log("/bin/bash", "webapp.sh",
-      `"${executeProfile.data_source}"`,
-      `"${executeProfile.path_simulator}"`,
-      `"${executeProfile.config_compilator}"`,
-      `"${executeProfile.config_fuzzer}"`,
-      `"${executeProfile.errors_directory}"`,
-      `"${executeProfile.description}"`,
-      `"${executeProfile.name}"`);
-
     const child = spawnSync("/bin/bash", ["webapp.sh",
       `${executeProfile.data_source}`,
       `${executeProfile.path_simulator}`,
@@ -72,13 +62,6 @@ controller.executionProfile = async function (req, res, next) {
         encoding: 'utf-8',
         timeout: TIMEOUT
       });
-    console.log(child.pid);
-    console.log(child.error);
-    console.log(child.output);
-    console.log(child.signal);
-    console.log(child.status);
-    console.log(child.stderr);
-    console.log(child.stdout);
 
     if (child.stderr) {
       exitError = 1;
