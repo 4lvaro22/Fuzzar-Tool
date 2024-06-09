@@ -6,7 +6,7 @@
 Este repositorio está centrado para realizar la asignatura Trabajo Fin de Grado (TFG) de Ingeniería del Software en la Universidad de Málaga. 
 
 Repositorio: https://github.com/4lvaro22/Fuzzar-Tool  
-Versión:  1.0.0  
+Versión:  ```1.0.0```  
 Fecha de creación de la herramienta: Mayo 2024 
 
 ## Autor  
