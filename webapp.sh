@@ -7,16 +7,16 @@ reset_all_env_variables(){
 }
 
 web_scrapping(){
-    if [[ -d "inputs" ]] ; then
-        rm -rf inputs/*
-    fi
-
     if  [ "$1" == "OBD-II" ] ; then 
-        pwd
-        ls
+        if [[ -d "inputs" ]] ; then
+            rm -rf inputs/*
+        fi
         python3 script/data/obd_web_scrapper.py
         rm -f inputs/candump_output.txt
     elif [ "$1" == "CAN Bus" ] ; then 
+        if [[ -d "inputs" ]] ; then
+            rm -rf inputs/*
+        fi
         python3 script/web/canbus_scrapper.py
     fi
 }
@@ -26,18 +26,18 @@ compiling_simulator() {
         cd "$1";
         rm -rf build
         eval "$(echo "$2")" > /dev/null 2>&1
-        make install
         cd "$actual_dir"
     elif [[ -f "$1" ]] ; then
+        echo "a"
         cd "$(dirname "$1")"
-        eval "$(echo "$2")" > /dev/null 2>&1
+        eval "$(echo "$2")" 
     else
         exit -1
     fi
 }
 
 executing_fuzzing(){
-    eval "$(echo "$1")" > /dev/null 2>&1
+    eval "$(echo "$1")" > /dev/null 2>&1 
     chmod -R 777 "$2"
 }
 
@@ -50,10 +50,19 @@ description="$6"
 name="$7"
 actual_dir="$(pwd)"
 
-echo "$conf_fuzz"
-
 analysis_comm=("" "AFL_USE_ASAN" "AFL_USE_MSAN" "AFL_USE_UBSAN" "AFL_USE_CFISAN" "AFL_USE_TSAN")
 reset_all_env_variables
+
+files=("database/data.json" "database/profiles.json")
+
+for file in "${files[@]}"
+do
+  if [[ ! -f "$file" ]]; then
+    touch "$file"
+    echo "[]" > "$file"
+  fi
+  chmod 777 "$file"
+done
 
 web_scrapping "$web_scrapper"
 
