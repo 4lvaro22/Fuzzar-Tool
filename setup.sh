@@ -76,17 +76,6 @@ install_libfuzzer() {
 sudo apt-get update
 sudo apt install python3-pip
 
-files=("database/data.json" "database/profiles.json")
-
-for file in "${files[@]}"
-do
-  if [[ ! -f "$file" ]]; then
-    touch "$file"
-    echo "[]" > "$file"
-  fi
-  chmod 777 "$file"
-done
-
 if [ $# -eq 0 ]; then
     echo -ne "No arguments provided. Please specify which fuzzers to install."
     echo -ne "Usage: $0 <fuzzers_names_or_all_to_complete_installation>"

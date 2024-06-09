@@ -25,12 +25,12 @@ def findings(dir_path):
     for file in os.listdir(dir_path):
         pipe = os.popen(f'file -b {dir_path}/{file}')
         data_type = pipe.read().strip()
-        
+
         if data_type == 'data':
             with open(dir_path + '/' + file, 'rb') as f:
                 content.append(f.read())
                 f.close()
-            
+
             findings += 1
 
     return {
@@ -47,7 +47,7 @@ def json_to_file(data_json):
             except json.JSONDecodeError:
                 data = []
         data.append(data_json)
-        
+
         with open(file_name, "w") as file:
             json.dump(data, file)
     else:
@@ -65,7 +65,6 @@ if __name__ == "__main__":
     description = sys.argv[6]
     name = sys.argv[7]
     execution_error = sys.argv[8]
-    time = sys.argv[9]
 
     analisys_data: dict = {}
 
@@ -78,13 +77,12 @@ if __name__ == "__main__":
     analisys_data["dirs_errors"] = dirs_errs
     analisys_data["id"] = str(uuid.uuid4())
     analisys_data["date"] = datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
-    analisys_data["time"]
 
-    findings = findings(dirs_errs) if execution_error != "error" else  {"findings": 'error', "content": None}
+    findings = findings(dirs_errs) if execution_error != "Error" else  {"findings": 'Error', "content": None}
 
     analisys_data["findings"] = findings["findings"]
-    analisys_data["invalid_inputs"] = findings["content"] 
-    
+    analisys_data["invalid_inputs"] = findings["content"]
+
     if execution_error != "Error":
         write_headers_bool = os.path.exists('data.csv')
 
@@ -93,12 +91,10 @@ if __name__ == "__main__":
             dict_writer = csv.DictWriter(f_object, fieldnames=field_names)
             if not write_headers_bool:
                 dict_writer.writeheader()
-            
+
             dict_writer.writerow(analisys_data)
             f_object.close()
 
     del analisys_data['invalid_inputs']
-    
+
     json_to_file(analisys_data)
-
-

@@ -41,20 +41,20 @@ controller.getProfiles = async function (req, res, next) {
 };
 
 controller.executionProfile = async function (req, res, next) {
-  try{
+  try {
     var exitError = 0;
-    
+
     const profiles = await fs.readFile(filePathProfiles, { encoding: 'utf-8' });
     const profilesData = JSON.parse(profiles);
-    
+
     const executeProfile = profilesData.find(element => element.name === req.params.name);
-    const TIMEOUT = executeProfile.time;
-    
+    const TIMEOUT = Number(executeProfile.time) * 1000;
+
     const child = spawnSync("/bin/bash", ["webapp.sh",
       `${executeProfile.data_source}`,
       `${executeProfile.path_simulator}`,
       `${executeProfile.config_compilator}`,
-      `${executeProfile.config_fuzzing}`,
+      `${executeProfile.config_fuzzer}`,
       `${executeProfile.errors_directory}`,
       `${executeProfile.description}`,
       `${executeProfile.name}`],
@@ -67,15 +67,16 @@ controller.executionProfile = async function (req, res, next) {
       exitError = 1;
     }
 
-    const dataModifier = spawnSync("python3", ['script/data_modifier.py', 
-      `${executeProfile.data_source}`, 
-      `${executeProfile.path_simulator}`, 
-      `${executeProfile.config_compilator}`, 
-      `${executeProfile.config_fuzzing}`, 
-      `${executeProfile.errors_directory}`, 
-      `${executeProfile.description}`, 
-      `${executeProfile.name}`, 
-    (exitError === 0) ? 'Success' : 'Error']);
+    const dataModifier = spawnSync("python3", ['script/data_modifier.py',
+      `${executeProfile.data_source}`,
+      `${executeProfile.path_simulator}`,
+      `${executeProfile.config_compilator}`,
+      `${executeProfile.config_fuzzer}`,
+      `${executeProfile.errors_directory}`,
+      `${executeProfile.description}`,
+      `${executeProfile.name}`,
+      (exitError === 0) ? 'Success' : 'Error']);
+
 
     res.redirect('/analysis');
   } catch (err) {

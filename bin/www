@@ -31,10 +31,10 @@ io.on('connection', (socket) => {
         io.emit('dataChanged');
       }
     });
-  }catch (err){
-    
+  } catch (err) {
+
   }
-  
+
 });
 
 /**

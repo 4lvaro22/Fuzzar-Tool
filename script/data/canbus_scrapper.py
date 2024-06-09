@@ -3,11 +3,11 @@ import time
 import os
 
 def run_cangen():
-    return subprocess.Popen(['cangen', 'vcan0'])
+    return subprocess.Popen(['cangen', 'can0'])
 
 def run_candump(file_path):
     with open(file_path, 'w') as f:
-        return subprocess.Popen(['candump', 'vcan0', '-L'], stdout=f)
+        return subprocess.Popen(['candump', 'can0', '-L'], stdout=f)
     
 def main(duration, file_path):
     cangen_proc = run_cangen()
