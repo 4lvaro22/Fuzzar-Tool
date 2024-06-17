@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title></title>
+    <title>Análisis realizados</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png" />
   </head>
   <body>
     <%- include('./layout/header.ejs') %>
     <main class="relative">
-      <%- include('./components/alert.ejs') %> 
-      <%- include('./components/table.ejs') %>
+      <%- include('./components/alert.ejs') %> <%-
+      include('./components/table.ejs') %>
     </main>
     <%- include('./layout/footer.ejs') %>
   </body>

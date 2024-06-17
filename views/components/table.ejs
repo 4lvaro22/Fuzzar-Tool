@@ -96,18 +96,18 @@
         <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
           <% if (actualPage != 1){%>
             <li>
-                <a href="/analysis/<%=Number(actualPage)-1%>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-black bg-white border rounded-s-lg">Previous</a>
+                <a href="/analysis/page/<%=Number(actualPage)-1%>" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-black bg-white border rounded-s-lg">Previous</a>
             </li>
             <% } %>
             <% page = 1 %>
             <% _.range(0, totalAnalysis.length, 10).forEach(element => { %>
               <li>
-                <a href="/analysis/<%=page%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border"><%= page %></a>
+                <a href="/analysis/page/<%=page%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border"><%= page %></a>
               </li>
               <% page ++; %>
             <% }); %>
             <% if (actualPage != page-1){%>
-        <a href="/analysis/<%=Number(actualPage)+1%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border rounded-e-lg">Next</a>
+        <a href="/analysis/page/<%=Number(actualPage)+1%>" class="flex items-center justify-center px-3 h-8 leading-tight text-black bg-white border rounded-e-lg">Next</a>
             </li>
             <% } %>
         </ul>

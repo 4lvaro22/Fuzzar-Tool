@@ -8,11 +8,11 @@ router.get("/", (req, res) => {
 })
 
 router.get("/analysis", analysisController.getAnalysis);
-router.get("/analysis/:page", analysisController.getAnalysis);
+router.get("/analysis/page/:page", analysisController.getAnalysis);
 router.get("/analysis/delete/:id", analysisController.deleteAnalysis);
 
 router.get("/profile", profileController.getProfiles);
-router.get("/profile/:page", profileController.getProfiles);
+router.get("/profile/page/:page", profileController.getProfiles);
 router.post("/profile/execute/:name", profileController.executionProfile);
 router.get("/profile/new", profileController.newProfile);
 router.get("/profile/new/:defName", profileController.newProfile);
