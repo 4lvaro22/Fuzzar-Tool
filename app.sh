@@ -87,7 +87,7 @@ main() {
     echo -ne "\n$blue_color[+]$grey_color Ejecutando análisis..."
     echo -ne "\n$blue_color[+]$grey_color Esto puede durar varios minutos!"
     bash ./webapp.sh "$data_source" "$path_simulator" "$config_compilator" "$config_fuzzing" "$errors_directory" "$description" "$name"
-    python3 script/data_modifier.py "$data_source" "$path_simulator" "$config_compilator" "$config_fuzzing" "$errors_directory" "$description" "$name"
+    python3 script/data_modifier.py "$data_source" "$path_simulator" "$config_compilator" "$config_fuzzing" "$errors_directory" "$description" "$name" ""
     echo -ne "\n$green_color[✓]$grey_color Análisis completado correctamente!!"
     echo -ne "\n$blue_color[+]$grey_color Usa la aplicación web para ver los resultados."
 
