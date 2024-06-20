@@ -24,7 +24,7 @@ controller.getAnalysis = async function (req, res, next) {
       initialData = 10 * (req.params.page - 1);
       lastData = 10 * req.params.page;
     }
-    
+
     res.render("tests.ejs", { totalAnalysis: databaseData, analysis: databaseData.slice(initialData, lastData), actualPage: actualPage, initialData: initialData, lastData: lastData, profiles: undefined });
 
   } catch (err) {
@@ -44,8 +44,6 @@ controller.deleteAnalysis = async function (req, res, next) {
     const data = await fs.readFile(filePathTestDone, { encoding: 'utf-8' });
     const databaseData = JSON.parse(data);
 
-    var removedObject = databaseData.filter((obj) => obj.id === req.params.id);
-    fs.rm('results/result-' + removedObject[0]["initial_time"], { recursive: true, force: true });
     var removedArray = databaseData.filter((obj) => obj.id !== req.params.id);
     removedArray = JSON.stringify(removedArray)
 
