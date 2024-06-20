@@ -59,17 +59,23 @@
   }
 </style>
 <script src="https://cdn.tailwindcss.com"></script>
+<title>Error</title>
+<link rel="icon" type="image/x-icon" href="/images/favicon.png" />
 
 <main class="space-y-5 my-10">
-    <div class="flex flex-row">
-        <h1 class="w-full text-center font-bold text-7xl"><%= message %></h1>
-    </div>
-    <div class="flex flex-row">
-        <h2 class="w-full text-center font-bold text-5xl">Error <%= error.status %></h2>
-    </div>
-    <div class="flex justify-center">
-        <p class="w-fit text-white text-xl bg-slate-900 rounded-2xl px-5 py-2">Ir a la <a href="/" class="underline text-blue-300"> página de inicio</a></p>
-    </div>
+  <div class="flex flex-row">
+    <h1 class="w-full text-center font-bold text-7xl"><%= message %></h1>
+  </div>
+  <div class="flex flex-row">
+    <h2 class="w-full text-center font-bold text-5xl">
+      Error <%= error.status %>
+    </h2>
+  </div>
+  <div class="flex justify-center">
+    <p class="w-fit text-white text-xl bg-slate-900 rounded-2xl px-5 py-2">
+      Ir a la <a href="/" class="underline text-blue-300"> página de inicio</a>
+    </p>
+  </div>
 </main>
 
 <div class="ocean">
