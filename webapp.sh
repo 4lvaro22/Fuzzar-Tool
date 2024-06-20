@@ -28,7 +28,6 @@ compiling_simulator() {
         eval "$(echo "$2")" > /dev/null 2>&1
         cd "$actual_dir"
     elif [[ -f "$1" ]] ; then
-        echo "a"
         cd "$(dirname "$1")"
         eval "$(echo "$2")" 
     else
