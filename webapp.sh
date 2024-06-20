@@ -53,17 +53,6 @@ actual_dir="$(pwd)"
 analysis_comm=("" "AFL_USE_ASAN" "AFL_USE_MSAN" "AFL_USE_UBSAN" "AFL_USE_CFISAN" "AFL_USE_TSAN")
 reset_all_env_variables
 
-files=("database/data.json" "database/profiles.json")
-
-for file in "${files[@]}"
-do
-  if [[ ! -f "$file" ]]; then
-    touch "$file"
-    echo "[]" > "$file"
-  fi
-  chmod 777 "$file"
-done
-
 web_scrapping "$web_scrapper"
 
 compiling_simulator "$path_sim" "$conf_comp"

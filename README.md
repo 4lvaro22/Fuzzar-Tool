@@ -6,7 +6,7 @@
 Este repositorio está centrado para realizar la asignatura Trabajo Fin de Grado (TFG) de Ingeniería del Software en la Universidad de Málaga. 
 
 Repositorio: https://github.com/4lvaro22/Fuzzar-Tool  
-Versión:  1.0.0  
+Versión:  ```1.0.0```  
 Fecha de creación de la herramienta: Mayo 2024 
 
 ## Autor  
@@ -25,7 +25,7 @@ Además, quiero agradecer el gran impulso que me han brindado para adentrarme en
 
 Enormemente agradecido con vosotros!
 
-## Introducción del Trabajo de Fin de Grado
+## Introducción del Trabajo Fin de Grado
 El TFG consiste en el estudio de vulnerabilidades en el entorno vehicular. Como ya sabemos, los vehículos son máquinas esenciales en nuestra vida diaria, pero tras ellos no solo existen mecanismos para que sea un objeto funcional, sino que éstos cuentan con un gran números de dispositivos electrónicos cuyas vulnerabilidades pueden ser aprovechadas por atacantes.  
   
 El protocolo a estudiar consiste en el sistema OBD-II. Con nacimiento entorno al 1990, es un sistema dedicado al mantenimiento y control del vehiculo. Puede aportar gran cantidad de información importante y valiosa, además de realizar una monitorización de fallos del sistema. Desde su obligatoriedad en EE.UU sobre el 1996, se ha extendido su uso sobre los diferentes estados del mundo como en Europa o Asia (aunque se usan variantes del mismo).  

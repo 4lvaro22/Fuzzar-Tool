@@ -134,6 +134,17 @@ trap 'cleanup' SIGINT SIGTERM
 clear
 cat banner/logo.asc
 
+files=("database/data.json" "database/profiles.json")
+
+for file in "${files[@]}"
+do
+  if [[ ! -f "$file" ]]; then
+    touch "$file"
+    echo "[]" > "$file"
+  fi
+  chmod 777 "$file"
+done
+
 execute_web_app
 initialize_variables
 
