@@ -70,16 +70,16 @@ main() {
     echo -ne "\n$yellow_color[?]$grey_color Introduce el directorio de errores del análisis: "
     read errors_directory
 
-    echo -ne "$yellow_color[?]$grey_color Introduce el directorio raíz del simulador o fichero: "
+    echo -ne "\n$yellow_color[?]$grey_color Introduce el directorio raíz del simulador o fichero: "
     read path_simulator
 
-    echo -ne "$yellow_color[?]$grey_color Introduce la configuración del compilador deseada: "
+    echo -ne "\n$yellow_color[?]$grey_color Introduce la configuración del compilador deseada: "
     read config_compilator
 
-    echo -ne "$yellow_color[?]$grey_color Introduce la configuración del fuzzing deseada: "
+    echo -ne "\n$yellow_color[?]$grey_color Introduce la configuración del fuzzing deseada: "
     read config_fuzzing
 
-    echo -ne "$yellow_color[?]$grey_color Introduce la descripción deseada de la prueba: "
+    echo -ne "\n$yellow_color[?]$grey_color Introduce la descripción deseada de la prueba: "
     read description
  
     name="Terminal"
@@ -88,8 +88,8 @@ main() {
     echo -ne "\n$blue_color[+]$grey_color Esto puede durar varios minutos!"
     bash ./webapp.sh "$data_source" "$path_simulator" "$config_compilator" "$config_fuzzing" "$errors_directory" "$description" "$name"
 
-    echo "$green_color[✓]$grey_color Análisis completado correctamente!!"
-    echo -ne "$blue_color[+]$grey_color Usa la aplicación web para ver los resultados."
+    echo -ne "\n$green_color[✓]$grey_color Análisis completado correctamente!!"
+    echo -ne "\n$blue_color[+]$grey_color Usa la aplicación web para ver los resultados."
 
     echo -ne "\n$yellow_color[?]$grey_color Quiere realizar otra prueba fuzzing? (s/N): "
     read loop
