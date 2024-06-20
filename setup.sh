@@ -43,7 +43,7 @@ install_aflplusplus() {
 install_honggfuzz() {
     echo -ne "\n$blue_color[+]$grey_color Installing dependencies..." 
 
-    sudo apt-get install binutils-dev libunwind-dev libblocksruntime-dev clang
+    sudo apt-get install -y binutils-dev libunwind-dev libblocksruntime-dev clang
     echo -ne "\n$green_color[✓]$grey_color Dependencies done."
 
     echo -ne "\n$blue_color[+]$grey_color Compiling Honggfuzz..."
@@ -60,7 +60,7 @@ install_honggfuzz() {
     
     cd /
     rm -rf "$TEMP_DIR"
-    echo -ne "$green_color[✓]$grey_color Honggfuzz installation completed."
+    echo -ne "\n$green_color[✓]$grey_color Honggfuzz installation completed."
 }
 
 # Installing function clang
@@ -70,11 +70,11 @@ install_libfuzzer() {
 
     sudo apt-get install clang
 
-    echo -ne "\n$green_color[✓]$grey_color LibFuzzer installation completed."
+    echo -ne "\n$green_color[✓]$grey_color LibFuzzer installation completed.\n"
 }
 
-sudo apt-get update
-sudo apt install python3-pip
+sudo apt-get -y update
+sudo apt install -y python3-pip
 
 if [ $# -eq 0 ]; then
     echo -ne "No arguments provided. Please specify which fuzzers to install."
