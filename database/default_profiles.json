@@ -2,7 +2,7 @@
   {
     "name": "AFLPlusPlus with CMake system build",
     "errors_directory": "outputs/default/crashes",
-    "config_compilator": "mkdir build; cd build; cmake -DCMAKE_C_COMPILERC=afl-gcc -DCMAKE_CXX_COMPILER=afl-g++ ..",
+    "config_compilator": "mkdir build; cd build; cmake -DCMAKE_C_COMPILERC=afl-gcc -DCMAKE_CXX_COMPILER=afl-g++ ..; make install",
     "path_simulator": "<directorio_simulador_fichero>",
     "config_fuzzing": "afl-fuzz -i inputs -o outputs -V 3600 -- <app_ejecutable>",
     "data_source": "No predeterminado",
@@ -11,7 +11,7 @@
   {
     "name": "AFLPlusPlus with Meson system build",
     "errors_directory": "outputs/default/crashes",
-    "config_compilator": "mkdir build; cd build; cmake -DCMAKE_C_COMPILERC=afl-gcc -DCMAKE_CXX_COMPILER=afl-g++ ..",
+    "config_compilator": "CC=afl-cc CXX=afl-c++ meson",
     "path_simulator": "<directorio_simulador_fichero>",
     "config_fuzzing": "afl-fuzz -i inputs -o outputs -V 3600 -- <app_ejecutable>",
     "data_source": "No predeterminado",
