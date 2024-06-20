@@ -20,6 +20,9 @@
                 Casos de prueba predeterminados
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
+                Tiempo de ejecución
+            </th>
+            <th scope="col" class="text-sm font-medium text-black px-6 py-4">
                 Descripción
             </th>
             <th scope="col" class="text-sm font-medium text-black px-6 py-4">
@@ -56,6 +59,11 @@
               class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
             >
               <%=element.data_source%>
+            </td>
+            <td
+              class="text-sm text-black font-medium px-6 py-2 whitespace-nowrap"
+            >
+              <%=element.time%>
             </td>
             <td class="text-sm text-black font-medium px-6 py-2 break-words">
               <button id="<%=element.name%> description" class="profile-description underline text-blue-600">Ver descripción</button>
