@@ -88,7 +88,7 @@
       <div class="mb-4 columns-2xl ms-2">
         <label for="dirErrs" class="flex text-md font-semibold mb-2 justify-between"
           >
-          <span class="inline-block align-middle">Directorio de los errores</span> 
+          <span class="inline-block align-middle">Directorio de los errores <span class="text-red-500">(Obligatorio)</span></span> 
           <span id="info-direrrs" class="inline-block align-middle text-white create-form-info"><%- include('../svg/info.ejs') %></span></label
         >
         <input
@@ -96,6 +96,7 @@
           id="dirErrs"
           name="dirErrs"
           value="<%=selectedProfile !== undefined && selectedProfile.errors_directory !== undefined ? selectedProfile.errors_directory : ""%>"
+          required
           class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500 text-black"
         />
       </div>

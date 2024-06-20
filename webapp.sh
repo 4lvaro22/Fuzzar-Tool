@@ -12,12 +12,12 @@ web_scrapping(){
             rm -rf inputs/*
         fi
         python3 script/data/obd_web_scrapper.py
-        rm -f inputs/candump_output.txt
     elif [ "$1" == "CAN Bus" ] ; then 
         if [[ -d "inputs" ]] ; then
             rm -rf inputs/*
         fi
         python3 script/web/canbus_scrapper.py
+         rm -f inputs/candump_output.txt
     fi
 }
 
