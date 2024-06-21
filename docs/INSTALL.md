@@ -10,9 +10,9 @@ Asumiendo que esté la herramienta Node.js instalada, se deberán instalar todas
 sudo apt-get update
 # Instalando las dependencias de linux
 sudo apt-get install -y jq build-essential python3-dev git python3-setuptools python3-pip
-sudo pip3 install beautifulsoup4 requests
 git clone https://github.com/4lvaro22/Fuzzar-Tool.git
 cd Fuzzar-Tool
+sudo pip3 install -r requirements.txt
 # Instalando las dependencias de node
 npm i
 ```
