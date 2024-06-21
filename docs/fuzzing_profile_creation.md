@@ -54,7 +54,8 @@ Si se tiene un conjunto de datos utilizable por el fuzzer a usar, entonces deber
 > [!CAUTION]
 > Los datos se deberán de incluir en un directorio llamado ```inputs``` en camino raíz de la herramienta Fuzzar. 
 
-Si no se tienen los datos a priori y, se quiere analizar protocolos OBD-II o CAN Bus, la herramienta ofrece la posibilidad de crear los casos de pruebas iniciales automáticamente.
+Si no se tienen los datos a priori y, se quiere analizar protocolos OBD-II o CAN Bus, la herramienta ofrece la posibilidad de crear los casos de pruebas iniciales automáticamente. Para el caso de CAN Bus será necesario crear con carácter previo una interfaz de red CAN de
+la librería can-utils.
 
 ### 7. Descripción de la prueba  
 Por último, pero no menos importante, se posibilita la opción de generar una descripción del análisis que realiza el perfil que se está creando.
